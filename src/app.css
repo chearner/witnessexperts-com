@@ -134,6 +134,7 @@
     font-size: var(--text-base);
     line-height: var(--text-base--line-height);
   }
+
   body {
     @apply bg-background text-foreground font-sans antialiased text-base;
   }
