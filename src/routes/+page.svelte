@@ -1,5 +1,11 @@
 <script lang="ts">
   import type { PageData } from "./$types";
+  import { HugeiconsIcon } from "@hugeicons/svelte";
+  import {
+    LayoutGridIcon,
+    Location01Icon,
+    MailSend01Icon,
+  } from "@hugeicons/core-free-icons";
   import { mainCategories } from "$lib/data/categories";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
@@ -152,7 +158,13 @@
     >
       <Card.Root>
         <Card.Header class="text-center">
-          <div class="mb-2 text-4xl" aria-hidden="true">📋</div>
+          <div class="mb-3 flex justify-center text-primary" aria-hidden="true">
+            <HugeiconsIcon
+              icon={LayoutGridIcon}
+              strokeWidth={1.5}
+              class="size-12"
+            />
+          </div>
           <Card.Title>Search by Category</Card.Title>
           <Card.Description>
             Browse experts across 15+ major practice areas with hundreds of
@@ -160,12 +172,26 @@
           </Card.Description>
         </Card.Header>
         <Card.Footer class="justify-center border-t">
-          <Button href="/categories" variant="link">Explore categories</Button>
+          <Button href="/categories" variant="link">
+            <HugeiconsIcon
+              icon={LayoutGridIcon}
+              data-icon="inline-start"
+              strokeWidth={2}
+              class="size-4"
+            />
+            Explore categories
+          </Button>
         </Card.Footer>
       </Card.Root>
       <Card.Root>
         <Card.Header class="text-center">
-          <div class="mb-2 text-4xl" aria-hidden="true">📍</div>
+          <div class="mb-3 flex justify-center text-primary" aria-hidden="true">
+            <HugeiconsIcon
+              icon={Location01Icon}
+              strokeWidth={1.5}
+              class="size-12"
+            />
+          </div>
           <Card.Title>Search by Location</Card.Title>
           <Card.Description>
             Find local experts or those willing to travel for depositions and
@@ -173,14 +199,26 @@
           </Card.Description>
         </Card.Header>
         <Card.Footer class="justify-center border-t">
-          <Button href="/search?location=1" variant="link"
-            >Search by location</Button
-          >
+          <Button href="/search?location=1" variant="link">
+            <HugeiconsIcon
+              icon={Location01Icon}
+              data-icon="inline-start"
+              strokeWidth={2}
+              class="size-4"
+            />
+            Search by location
+          </Button>
         </Card.Footer>
       </Card.Root>
       <Card.Root>
         <Card.Header class="text-center">
-          <div class="mb-2 text-4xl" aria-hidden="true">✉️</div>
+          <div class="mb-3 flex justify-center text-primary" aria-hidden="true">
+            <HugeiconsIcon
+              icon={MailSend01Icon}
+              strokeWidth={1.5}
+              class="size-12"
+            />
+          </div>
           <Card.Title>Request an Expert</Card.Title>
           <Card.Description>
             Can't find what you need? Submit a request and our network will help
@@ -188,7 +226,15 @@
           </Card.Description>
         </Card.Header>
         <Card.Footer class="justify-center border-t">
-          <Button href="/request" variant="link">Submit request</Button>
+          <Button href="/request" variant="link">
+            <HugeiconsIcon
+              icon={MailSend01Icon}
+              data-icon="inline-start"
+              strokeWidth={2}
+              class="size-4"
+            />
+            Submit request
+          </Button>
         </Card.Footer>
       </Card.Root>
     </div>

@@ -1,4 +1,12 @@
 <script lang="ts">
+  import { HugeiconsIcon } from "@hugeicons/svelte";
+  import {
+    ListViewIcon,
+    MailReceive01Icon,
+    Search01Icon,
+    UserAdd01Icon,
+    UserEdit01Icon,
+  } from "@hugeicons/core-free-icons";
   import { mainCategories } from "$lib/data/categories";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
@@ -34,12 +42,23 @@
 </svelte:head>
 
 <section class="bg-primary px-6 py-12 text-primary-foreground">
-  <div class="mx-auto max-w-6xl space-y-4">
-    <h1>Get listed today</h1>
-    <p class="max-w-2xl text-primary-foreground/90">
-      Join America's trusted expert witness directory. Create a searchable
-      profile and connect with attorneys seeking your expertise.
-    </p>
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:items-center sm:gap-8"
+  >
+    <div class="flex justify-center sm:justify-start" aria-hidden="true">
+      <HugeiconsIcon
+        icon={UserAdd01Icon}
+        strokeWidth={1.5}
+        class="size-16 shrink-0 text-primary-foreground/90"
+      />
+    </div>
+    <div class="space-y-4 text-center sm:text-left">
+      <h1>Get listed today</h1>
+      <p class="mx-auto max-w-2xl text-primary-foreground/90 sm:mx-0">
+        Join America's trusted expert witness directory. Create a searchable
+        profile and connect with attorneys seeking your expertise.
+      </p>
+    </div>
   </div>
 </section>
 
@@ -49,7 +68,13 @@
     <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">
       <Card.Root>
         <Card.Header class="text-center">
-          <div class="mb-2 text-4xl" aria-hidden="true">🔍</div>
+          <div class="mb-3 flex justify-center text-primary" aria-hidden="true">
+            <HugeiconsIcon
+              icon={Search01Icon}
+              strokeWidth={1.5}
+              class="size-12"
+            />
+          </div>
           <Card.Title class="text-xl">Get discovered</Card.Title>
           <Card.Description>
             Appear in category and keyword searches when attorneys look for
@@ -59,7 +84,13 @@
       </Card.Root>
       <Card.Root>
         <Card.Header class="text-center">
-          <div class="mb-2 text-4xl" aria-hidden="true">📧</div>
+          <div class="mb-3 flex justify-center text-primary" aria-hidden="true">
+            <HugeiconsIcon
+              icon={MailReceive01Icon}
+              strokeWidth={1.5}
+              class="size-12"
+            />
+          </div>
           <Card.Title class="text-xl">Receive inquiries</Card.Title>
           <Card.Description>
             Attorneys can contact you directly through our platform for case
@@ -69,7 +100,13 @@
       </Card.Root>
       <Card.Root>
         <Card.Header class="text-center">
-          <div class="mb-2 text-4xl" aria-hidden="true">📋</div>
+          <div class="mb-3 flex justify-center text-primary" aria-hidden="true">
+            <HugeiconsIcon
+              icon={UserEdit01Icon}
+              strokeWidth={1.5}
+              class="size-12"
+            />
+          </div>
           <Card.Title class="text-xl">Manage your profile</Card.Title>
           <Card.Description>
             Update your credentials, areas of expertise, and availability
@@ -83,10 +120,19 @@
   <section class="mx-auto max-w-xl">
     <Card.Root>
       <Card.Header>
-        <Card.Title>Create your listing</Card.Title>
-        <Card.Description>
-          Tell us about your practice so we can set up your expert profile.
-        </Card.Description>
+        <div class="flex items-start gap-3">
+          <HugeiconsIcon
+            icon={ListViewIcon}
+            strokeWidth={2}
+            class="text-primary mt-0.5 size-7 shrink-0"
+          />
+          <div class="space-y-1.5">
+            <Card.Title>Create your listing</Card.Title>
+            <Card.Description>
+              Tell us about your practice so we can set up your expert profile.
+            </Card.Description>
+          </div>
+        </div>
       </Card.Header>
       <Card.Content>
         <form class="space-y-6" onsubmit={handleSubmit}>
@@ -168,7 +214,15 @@
             />
           </div>
 
-          <Button type="submit" class="w-full">Create listing</Button>
+          <Button type="submit" class="w-full">
+            <HugeiconsIcon
+              icon={UserAdd01Icon}
+              data-icon="inline-start"
+              strokeWidth={2}
+              class="size-4"
+            />
+            Create listing
+          </Button>
         </form>
       </Card.Content>
     </Card.Root>

@@ -1,4 +1,11 @@
 <script lang="ts">
+  import { HugeiconsIcon } from "@hugeicons/svelte";
+  import {
+    LayoutGridIcon,
+    Location01Icon,
+    MailSend01Icon,
+    Search01Icon,
+  } from "@hugeicons/core-free-icons";
   import { Button } from "$lib/components/ui/button";
   import { Separator } from "$lib/components/ui/separator";
 </script>
@@ -33,19 +40,48 @@
         </h4>
         <ul class="flex flex-col items-center gap-1 md:items-start">
           <li>
-            <Button href="/categories" variant="ghost" size="sm"
-              >Search by Category</Button
-            >
+            <Button href="/categories" variant="ghost" size="sm">
+              <HugeiconsIcon
+                icon={LayoutGridIcon}
+                data-icon="inline-start"
+                strokeWidth={2}
+                class="text-muted-foreground size-4"
+              />
+              Search by Category
+            </Button>
           </li>
           <li>
-            <Button href="/search" variant="ghost" size="sm"
-              >Search by Keyword</Button
-            >
+            <Button href="/search?location=1" variant="ghost" size="sm">
+              <HugeiconsIcon
+                icon={Location01Icon}
+                data-icon="inline-start"
+                strokeWidth={2}
+                class="text-muted-foreground size-4"
+              />
+              Search by Location
+            </Button>
           </li>
           <li>
-            <Button href="/request" variant="ghost" size="sm"
-              >Request an Expert</Button
-            >
+            <Button href="/search" variant="ghost" size="sm">
+              <HugeiconsIcon
+                icon={Search01Icon}
+                data-icon="inline-start"
+                strokeWidth={2}
+                class="text-muted-foreground size-4"
+              />
+              Search by Keyword
+            </Button>
+          </li>
+          <li>
+            <Button href="/request" variant="ghost" size="sm">
+              <HugeiconsIcon
+                icon={MailSend01Icon}
+                data-icon="inline-start"
+                strokeWidth={2}
+                class="text-muted-foreground size-4"
+              />
+              Request an Expert
+            </Button>
           </li>
         </ul>
       </nav>
