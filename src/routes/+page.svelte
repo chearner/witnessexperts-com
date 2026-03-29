@@ -1,0 +1,213 @@
+<script lang="ts">
+  import type { PageData } from "./$types";
+  import { mainCategories } from "$lib/data/categories";
+  import { Button } from "$lib/components/ui/button";
+  import { Input } from "$lib/components/ui/input";
+  import { Label } from "$lib/components/ui/label";
+  import * as Card from "$lib/components/ui/card";
+
+  let { data }: { data: PageData } = $props();
+
+  function expertInitials(name: string) {
+    return name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase() ?? "")
+      .join("");
+  }
+</script>
+
+<svelte:head>
+  <title>WitnessExperts.com - Find Expert Witnesses for Your Case</title>
+</svelte:head>
+
+<section
+  class="bg-primary px-6 py-16 text-primary-foreground md:py-24"
+>
+  <div
+    class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-center lg:gap-12"
+  >
+    <div class="flex flex-col gap-8 text-center lg:text-left">
+      <div class="space-y-4">
+        <h1>Find the Right Expert Witness for Your Case</h1>
+        <p class="text-balance text-lg text-primary-foreground/90">
+          Connect with qualified expert witnesses across 15+ practice areas.
+          Trusted by attorneys nationwide.
+        </p>
+      </div>
+
+      <form
+        class="mx-auto flex w-full max-w-xl overflow-hidden rounded-lg border border-border bg-card text-left shadow-sm lg:mx-0"
+        action="/search"
+        method="get"
+        role="search"
+      >
+        <Label for="hero-search-input" class="sr-only"
+          >Search for expert witnesses</Label
+        >
+        <Input
+          id="hero-search-input"
+          type="search"
+          name="q"
+          placeholder="Search by specialty, keyword, or category..."
+          class="min-h-10 min-w-0 flex-1 rounded-none border-0 bg-transparent py-3 text-base text-card-foreground shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 md:px-6 md:py-4"
+          aria-label="Search for expert witnesses"
+        />
+        <Button type="submit" size="lg" class="shrink-0 rounded-none px-8">
+          Search
+        </Button>
+      </form>
+
+      <div class="flex flex-wrap justify-center gap-4 lg:justify-start">
+        <Button href="/categories" variant="secondary">
+          Browse by Category
+        </Button>
+        <Button href="/request" variant="secondary">Request an Expert</Button>
+      </div>
+    </div>
+
+    <div class="w-full min-w-0">
+      <Card.Root
+        class="border-primary-foreground/20 bg-card text-left text-card-foreground shadow-lg"
+      >
+        <Card.Header class="pb-2">
+          <Card.Title class="text-lg">Featured experts</Card.Title>
+          <Card.Description>
+            Spotlight profiles from our directory — refreshed on each visit.
+          </Card.Description>
+        </Card.Header>
+        <Card.Content class="pt-0">
+          <ul class="divide-y divide-border" role="list">
+            {#each data.featuredExperts as expert (expert.id)}
+              <li>
+                <a
+                  href={expert.href ?? "/search"}
+                  class="flex gap-3 rounded-lg py-3 transition-colors hover:bg-muted/60"
+                >
+                  <div
+                    class="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground text-xs font-semibold"
+                    aria-hidden="true"
+                  >
+                    {expertInitials(expert.name)}
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p class="font-medium text-foreground leading-tight">
+                      {expert.name}
+                    </p>
+                    <p class="text-muted-foreground text-sm">{expert.title}</p>
+                    <p class="text-muted-foreground text-xs">{expert.location}</p>
+                  </div>
+                </a>
+              </li>
+            {/each}
+          </ul>
+        </Card.Content>
+      </Card.Root>
+    </div>
+  </div>
+</section>
+
+<section class="px-6 py-16 md:py-24">
+  <div class="mx-auto max-w-6xl space-y-8">
+    <div class="mx-auto max-w-xl space-y-2 text-center">
+      <h2>Experts by Category</h2>
+      <p class="text-muted-foreground">
+        Browse our comprehensive directory of expert witnesses across major
+        practice areas.
+      </p>
+    </div>
+
+    <div
+      class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4"
+    >
+      {#each mainCategories.slice(0, 8) as category}
+        <a href="/categories/{category.slug}" class="block h-full">
+          <Card.Root
+            class="h-full transition-shadow hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <Card.Header>
+              <Card.Title>{category.name}</Card.Title>
+              {#if category.expertCount}
+                <Card.Description
+                  >{category.expertCount} experts</Card.Description
+                >
+              {/if}
+            </Card.Header>
+          </Card.Root>
+        </a>
+      {/each}
+    </div>
+
+    <div class="flex justify-center">
+      <Button variant="link" href="/categories">View All Categories →</Button>
+    </div>
+  </div>
+</section>
+
+<section class="bg-muted/50 px-6 py-16 md:py-24">
+  <div class="mx-auto max-w-6xl">
+    <div
+      class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6"
+    >
+      <Card.Root>
+        <Card.Header class="text-center">
+          <div class="mb-2 text-4xl" aria-hidden="true">📋</div>
+          <Card.Title>Search by Category</Card.Title>
+          <Card.Description>
+            Browse experts across 15+ major practice areas with hundreds of
+            specialized subcategories.
+          </Card.Description>
+        </Card.Header>
+        <Card.Footer class="justify-center border-t">
+          <Button href="/categories" variant="link">Explore categories</Button>
+        </Card.Footer>
+      </Card.Root>
+      <Card.Root>
+        <Card.Header class="text-center">
+          <div class="mb-2 text-4xl" aria-hidden="true">📍</div>
+          <Card.Title>Search by Location</Card.Title>
+          <Card.Description>
+            Find local experts or those willing to travel for depositions and
+            trial testimony.
+          </Card.Description>
+        </Card.Header>
+        <Card.Footer class="justify-center border-t">
+          <Button href="/search?location=1" variant="link"
+            >Search by location</Button
+          >
+        </Card.Footer>
+      </Card.Root>
+      <Card.Root>
+        <Card.Header class="text-center">
+          <div class="mb-2 text-4xl" aria-hidden="true">✉️</div>
+          <Card.Title>Request an Expert</Card.Title>
+          <Card.Description>
+            Can't find what you need? Submit a request and our network will help
+            match you.
+          </Card.Description>
+        </Card.Header>
+        <Card.Footer class="justify-center border-t">
+          <Button href="/request" variant="link">Submit request</Button>
+        </Card.Footer>
+      </Card.Root>
+    </div>
+  </div>
+</section>
+
+<section
+  class="bg-primary px-6 py-16 text-center text-primary-foreground md:py-24"
+>
+  <div class="mx-auto max-w-6xl space-y-6">
+    <div class="mx-auto max-w-lg space-y-4">
+      <h2>Are You an Expert Witness?</h2>
+      <p class="text-balance text-primary-foreground/90">
+        Join our directory and connect with attorneys seeking your expertise.
+        Create a searchable profile today.
+      </p>
+    </div>
+    <Button href="/list" size="lg" variant="secondary">
+      Get Listed Today
+    </Button>
+  </div>
+</section>
