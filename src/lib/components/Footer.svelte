@@ -103,6 +103,12 @@
             >
           </li>
           <li>
+            <Button href="/login" variant="ghost" size="sm">Member login</Button>
+          </li>
+          <li>
+            <Button href="/register" variant="ghost" size="sm">Create account</Button>
+          </li>
+          <li>
             <Button href="/fees" variant="ghost" size="sm"
               >Fees & Practices</Button
             >

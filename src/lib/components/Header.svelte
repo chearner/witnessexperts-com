@@ -1,10 +1,13 @@
 <script lang="ts">
+  import type { Session } from "@supabase/supabase-js";
   import { page } from "$app/state";
   import { cn } from "$lib/utils.js";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
   import { Separator } from "$lib/components/ui/separator";
+
+  let { session = null }: { session?: Session | null } = $props();
 
   let searchQuery = $state("");
   let mobileMenuOpen = $state(false);
@@ -99,7 +102,17 @@
     </form>
 
     <div class="hidden items-center gap-2 lg:flex">
-      <Button href="/login" variant="outline" size="sm">Member Login</Button>
+      {#if session?.user}
+        <Button href="/account" variant="ghost" size="sm">Account</Button>
+        <span class="text-muted-foreground max-w-[120px] truncate text-sm" title={session.user.email ?? ""}>
+          {session.user.email}
+        </span>
+        <form method="POST" action="/logout" class="inline-flex">
+          <Button type="submit" variant="outline" size="sm">Sign out</Button>
+        </form>
+      {:else}
+        <Button href="/login" variant="outline" size="sm">Member Login</Button>
+      {/if}
       <Button href="/list" size="sm">Get Listed Today</Button>
     </div>
 
@@ -156,12 +169,32 @@
         class="w-full justify-start"
         onclick={() => (mobileMenuOpen = false)}>Request an Expert</Button
       >
-      <Button
-        href="/login"
-        variant="ghost"
-        class="w-full justify-start"
-        onclick={() => (mobileMenuOpen = false)}>Member Login</Button
-      >
+      {#if session?.user}
+        <Button
+          href="/account"
+          variant="ghost"
+          class="w-full justify-start"
+          onclick={() => (mobileMenuOpen = false)}>Account</Button
+        >
+        <p class="text-muted-foreground px-2 py-1.5 text-sm">
+          {session.user.email}
+        </p>
+        <form method="POST" action="/logout" class="px-2">
+          <Button
+            type="submit"
+            variant="ghost"
+            class="w-full justify-start"
+            onclick={() => (mobileMenuOpen = false)}>Sign out</Button
+          >
+        </form>
+      {:else}
+        <Button
+          href="/login"
+          variant="ghost"
+          class="w-full justify-start"
+          onclick={() => (mobileMenuOpen = false)}>Member Login</Button
+        >
+      {/if}
       <Button
         href="/list"
         variant="ghost"

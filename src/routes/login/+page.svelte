@@ -1,9 +1,12 @@
 <script lang="ts">
-  // Placeholder — would integrate with auth in production
+  import { enhance } from "$app/forms";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
+  import { Alert, AlertDescription, AlertTitle } from "$lib/components/ui/alert";
   import * as Card from "$lib/components/ui/card";
+
+  let { data, form } = $props();
 </script>
 
 <svelte:head>
@@ -19,13 +22,26 @@
       </Card.Description>
     </Card.Header>
     <Card.Content>
-      <form class="space-y-6">
+      {#if data.error}
+        <Alert variant="destructive" class="mb-6">
+          <AlertTitle>Could not complete sign-in</AlertTitle>
+          <AlertDescription>{data.error}</AlertDescription>
+        </Alert>
+      {/if}
+      {#if form?.message}
+        <Alert variant="destructive" class="mb-6">
+          <AlertTitle>Sign-in failed</AlertTitle>
+          <AlertDescription>{form.message}</AlertDescription>
+        </Alert>
+      {/if}
+      <form class="space-y-6" method="POST" use:enhance>
         <div class="space-y-2">
           <Label for="email">Email address</Label>
           <Input
             id="email"
             type="email"
             name="email"
+            value={form?.email ?? ""}
             placeholder="you@example.com"
             required
             autocomplete="email"
@@ -53,7 +69,13 @@
       class="flex flex-col items-center gap-1 text-center text-sm text-muted-foreground"
     >
       <p>
-        Not a member?
+        New here?
+        <Button href="/register" variant="link" class="inline h-auto p-0 text-sm">
+          Create an account
+        </Button>
+      </p>
+      <p>
+        Want a listing?
         <Button href="/list" variant="link" class="inline h-auto p-0 text-sm">
           Get listed today
         </Button>

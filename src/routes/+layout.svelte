@@ -4,14 +4,14 @@
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
 
-  let { children } = $props();
+  let { children, data } = $props();
 </script>
 
 <svelte:head>
   <link rel="icon" href={favicon} />
 </svelte:head>
 
-<Header />
+<Header session={data.session} />
 <main class="bg-background min-h-[calc(100vh-4rem-200px)] flex-1">
   {@render children()}
 </main>
