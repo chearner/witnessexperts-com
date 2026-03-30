@@ -1,10 +1,14 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import { Button } from "$lib/components/ui/button";
+  import { submittingEnhance } from "$lib/submitting-enhance.js";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
   import * as Card from "$lib/components/ui/card";
 
   let { form } = $props();
+
+  let submitting = $state(false);
 </script>
 
 <svelte:head>
@@ -38,7 +42,11 @@
         </Card.Description>
       </Card.Header>
       <Card.Content>
-        <form class="space-y-6" method="POST">
+        <form
+          class="space-y-6"
+          method="POST"
+          use:enhance={submittingEnhance((v) => (submitting = v))}
+        >
           {#if form?.message}
             <p class="text-destructive text-sm" role="alert">{form.message}</p>
           {/if}
@@ -53,7 +61,7 @@
               autocomplete="email"
             />
           </div>
-          <Button type="submit" class="w-full">Send reset link</Button>
+          <Button type="submit" class="w-full" loading={submitting}>Send reset link</Button>
           <div class="text-center">
             <Button href="/login" variant="link" size="sm">Back to sign in</Button>
           </div>

@@ -38,6 +38,8 @@
 		WithElementRef<HTMLAnchorAttributes> & {
 			variant?: ButtonVariant;
 			size?: ButtonSize;
+			/** Shows spinner, disables control, sets aria-busy (buttons only). */
+			loading?: boolean;
 		};
 </script>
 
@@ -50,33 +52,52 @@
 		href = undefined,
 		type = "button",
 		disabled,
+		loading = false,
 		children,
 		...restProps
 	}: ButtonProps = $props();
+
+	const isDisabled = $derived(!!(disabled || (!href && loading)));
 </script>
 
 {#if href}
 	<a
 		bind:this={ref}
 		data-slot="button"
-		class={cn(buttonVariants({ variant, size }), className)}
-		href={disabled ? undefined : href}
-		aria-disabled={disabled}
-		role={disabled ? "link" : undefined}
-		tabindex={disabled ? -1 : undefined}
+		data-loading={loading || undefined}
+		class={cn(buttonVariants({ variant, size }), loading && "pointer-events-none opacity-70", className)}
+		href={disabled || loading ? undefined : href}
+		aria-disabled={disabled || loading}
+		aria-busy={loading || undefined}
+		role={disabled || loading ? "link" : undefined}
+		tabindex={disabled || loading ? -1 : undefined}
 		{...restProps}
 	>
+		{#if loading}
+			<span
+				class="inline-block size-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent opacity-90"
+				aria-hidden="true"
+			></span>
+		{/if}
 		{@render children?.()}
 	</a>
 {:else}
 	<button
 		bind:this={ref}
 		data-slot="button"
+		data-loading={loading || undefined}
 		class={cn(buttonVariants({ variant, size }), className)}
 		{type}
-		{disabled}
+		disabled={isDisabled}
+		aria-busy={loading || undefined}
 		{...restProps}
 	>
+		{#if loading}
+			<span
+				class="inline-block size-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent opacity-90"
+				aria-hidden="true"
+			></span>
+		{/if}
 		{@render children?.()}
 	</button>
 {/if}

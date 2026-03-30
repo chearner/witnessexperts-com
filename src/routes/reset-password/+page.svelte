@@ -1,11 +1,15 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import { Button } from "$lib/components/ui/button";
+  import { submittingEnhance } from "$lib/submitting-enhance.js";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
   import { Alert, AlertDescription, AlertTitle } from "$lib/components/ui/alert";
   import * as Card from "$lib/components/ui/card";
 
   let { form } = $props();
+
+  let submitting = $state(false);
 </script>
 
 <svelte:head>
@@ -27,7 +31,11 @@
           <AlertDescription>{form.message}</AlertDescription>
         </Alert>
       {/if}
-      <form class="space-y-6" method="POST">
+      <form
+        class="space-y-6"
+        method="POST"
+        use:enhance={submittingEnhance((v) => (submitting = v))}
+      >
         <div class="space-y-2">
           <Label for="password">New password</Label>
           <Input
@@ -50,7 +58,7 @@
             autocomplete="new-password"
           />
         </div>
-        <Button type="submit" class="w-full">Update password</Button>
+        <Button type="submit" class="w-full" loading={submitting}>Update password</Button>
         <div class="text-center">
           <Button href="/login" variant="link" size="sm">Back to sign in</Button>
         </div>

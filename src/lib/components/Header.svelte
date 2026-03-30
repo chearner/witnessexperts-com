@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { Session } from "@supabase/supabase-js";
+  import { enhance } from "$app/forms";
   import { page } from "$app/state";
+  import { submittingEnhance } from "$lib/submitting-enhance.js";
   import { cn } from "$lib/utils.js";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
@@ -22,6 +24,7 @@
 
   let searchQuery = $state("");
   let mobileMenuOpen = $state(false);
+  let signingOut = $state(false);
 
   function handleSearch(e: Event) {
     e.preventDefault();
@@ -121,8 +124,15 @@
         <span class="text-muted-foreground max-w-[120px] truncate text-sm" title={session.user.email ?? ""}>
           {session.user.email}
         </span>
-        <form method="POST" action="/logout" class="inline-flex">
-          <Button type="submit" variant="outline" size="sm">Sign out</Button>
+        <form
+          method="POST"
+          action="/logout"
+          class="inline-flex"
+          use:enhance={submittingEnhance((v) => (signingOut = v))}
+        >
+          <Button type="submit" variant="outline" size="sm" loading={signingOut}
+            >Sign out</Button
+          >
         </form>
       {:else if !session?.user}
         <Button href="/login" variant="outline" size="sm">Member Login</Button>
@@ -194,11 +204,17 @@
           <p class="text-muted-foreground px-2 py-1.5 text-sm">
             {session.user.email}
           </p>
-          <form method="POST" action="/logout" class="px-2">
+          <form
+            method="POST"
+            action="/logout"
+            class="px-2"
+            use:enhance={submittingEnhance((v) => (signingOut = v))}
+          >
             <Button
               type="submit"
               variant="ghost"
               class="w-full justify-start"
+              loading={signingOut}
               onclick={() => (mobileMenuOpen = false)}>Sign out</Button
             >
           </form>

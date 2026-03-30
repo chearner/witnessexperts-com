@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { page } from "$app/state";
+  import { submittingEnhance } from "$lib/submitting-enhance.js";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
@@ -10,10 +11,13 @@
     AlertDescription,
     AlertTitle,
   } from "$lib/components/ui/alert";
+  import { toast } from "$lib/components/ui/sonner";
   import * as Card from "$lib/components/ui/card";
   import { getCategoryBySlug, mainCategories } from "$lib/data/categories";
 
   let { data, form } = $props();
+
+  let submitting = $state(false);
 
   let displayName = $state("");
   let emailVal = $state("");
@@ -54,6 +58,18 @@
   const emailPending = $derived(
     page.url.searchParams.get("email") === "confirm",
   );
+
+  let prevSaved = $state(false);
+  $effect(() => {
+    if (saved && !prevSaved) {
+      toast.success("Profile saved", {
+        description: emailPending
+          ? "Check your inbox to confirm your new email address if you changed it."
+          : "Your changes were saved.",
+      });
+    }
+    prevSaved = saved;
+  });
 </script>
 
 <svelte:head>
@@ -70,18 +86,6 @@
     </p>
   </div>
 
-  {#if saved}
-    <Alert class="mb-6">
-      <AlertTitle>Profile saved</AlertTitle>
-      <AlertDescription>
-        Your changes were saved.
-        {#if emailPending}
-          Check your inbox to confirm your new email address if you changed it.
-        {/if}
-      </AlertDescription>
-    </Alert>
-  {/if}
-
   <Card.Root class="max-w-2xl">
     <Card.Content class="space-y-6">
       {#if data.profileError}
@@ -96,7 +100,11 @@
             <AlertDescription>{form.message}</AlertDescription>
           </Alert>
         {/if}
-        <form method="POST" class="space-y-8" use:enhance>
+        <form
+          method="POST"
+          class="space-y-8"
+          use:enhance={submittingEnhance((v) => (submitting = v))}
+        >
           <div class="space-y-4">
             <h3 class="text-xl font-medium">Contact &amp; account</h3>
             <div class="space-y-2">
@@ -199,7 +207,7 @@
             <p class="text-muted-foreground text-xs">Up to 2,000 characters.</p>
           </div>
 
-          <Button type="submit">Save profile</Button>
+          <Button type="submit" loading={submitting}>Save profile</Button>
         </form>
       {/if}
       <p class="text-muted-foreground text-sm">

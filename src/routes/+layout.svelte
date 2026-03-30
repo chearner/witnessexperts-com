@@ -5,6 +5,7 @@
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
   import * as Sidebar from "$lib/components/ui/sidebar/index.js";
+  import { Toaster } from "$lib/components/ui/sonner/index.js";
 
   let { children, data } = $props();
 
@@ -14,6 +15,8 @@
 <svelte:head>
   <link rel="icon" href={favicon} />
 </svelte:head>
+
+<Toaster />
 
 {#if loggedIn}
   <Sidebar.Provider>

@@ -1,6 +1,10 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
+  import { submittingEnhance } from "$lib/submitting-enhance.js";
+
+  let submitting = $state(false);
 </script>
 
 <svelte:head>
@@ -14,8 +18,8 @@
       <Card.Description>End your session on this device.</Card.Description>
     </Card.Header>
     <Card.Footer class="justify-center">
-      <form method="POST">
-        <Button type="submit">Sign out</Button>
+      <form method="POST" use:enhance={submittingEnhance((v) => (submitting = v))}>
+        <Button type="submit" loading={submitting}>Sign out</Button>
       </form>
     </Card.Footer>
   </Card.Root>
