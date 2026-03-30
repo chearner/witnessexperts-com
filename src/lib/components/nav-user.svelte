@@ -1,14 +1,19 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
   import * as Avatar from "$lib/components/ui/avatar/index.js";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
   import * as Sidebar from "$lib/components/ui/sidebar/index.js";
   import { useSidebar } from "$lib/components/ui/sidebar/index.js";
   import { sidebarMenuButtonVariants } from "$lib/components/ui/sidebar/sidebar-menu-button.svelte";
+  import { isDarkMode, toggleTheme } from "$lib/theme.js";
   import { cn } from "$lib/utils.js";
   import LogOutIcon from "@lucide/svelte/icons/log-out";
+  import MoonIcon from "@lucide/svelte/icons/moon";
   import MoreVerticalIcon from "@lucide/svelte/icons/more-vertical";
+  import SunIcon from "@lucide/svelte/icons/sun";
   import UserRoundIcon from "@lucide/svelte/icons/user-round";
+  import { onMount } from "svelte";
 
   let {
     name,
@@ -21,6 +26,11 @@
   } = $props();
 
   const sidebar = useSidebar();
+
+  let dark = $state(false);
+  onMount(() => {
+    if (browser) dark = isDarkMode();
+  });
 
   function initials() {
     const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -41,7 +51,11 @@
 
 <Sidebar.Menu>
   <Sidebar.MenuItem>
-    <DropdownMenu.Root>
+    <DropdownMenu.Root
+      onOpenChange={(open) => {
+        if (open && browser) dark = isDarkMode();
+      }}
+    >
       <DropdownMenu.Trigger>
         {#snippet child({ props })}
           <button
@@ -92,6 +106,19 @@
           >
             <UserRoundIcon />
             Profile
+          </DropdownMenu.Item>
+          <DropdownMenu.Item
+            onSelect={() => {
+              dark = toggleTheme() === "dark";
+            }}
+          >
+            {#if dark}
+              <SunIcon />
+              Light mode
+            {:else}
+              <MoonIcon />
+              Dark mode
+            {/if}
           </DropdownMenu.Item>
         </DropdownMenu.Group>
         <DropdownMenu.Separator />

@@ -2,6 +2,18 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
+		<script>
+			(function () {
+				try {
+					var k = "witnessexperts-theme";
+					var t = localStorage.getItem(k);
+					if (t === "dark") document.documentElement.classList.add("dark");
+					else if (t === "light") document.documentElement.classList.remove("dark");
+					else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
+						document.documentElement.classList.add("dark");
+				} catch (e) {}
+			})();
+		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>WitnessExperts.com - Find Expert Witnesses for Your Case</title>
 		<meta name="description" content="Connect with qualified expert witnesses across 15+ practice areas. Search by category, specialty, or location. Trusted by attorneys nationwide." />
