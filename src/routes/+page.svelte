@@ -28,12 +28,8 @@
   <title>WitnessExperts.com - Find Expert Witnesses for Your Case</title>
 </svelte:head>
 
-<section
-  class="bg-primary px-6 py-16 text-primary-foreground md:py-24"
->
-  <div
-    class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-center lg:gap-12"
-  >
+<section class="bg-primary px-6 py-16 text-primary-foreground md:py-24">
+  <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:gap-12">
     <div class="flex flex-col gap-8 text-center lg:text-left">
       <div class="space-y-4">
         <h1>Find the Right Expert Witness for Your Case</h1>
@@ -102,7 +98,9 @@
                       {expert.name}
                     </p>
                     <p class="text-muted-foreground text-sm">{expert.title}</p>
-                    <p class="text-muted-foreground text-xs">{expert.location}</p>
+                    <p class="text-muted-foreground text-xs">
+                      {expert.location}
+                    </p>
                   </div>
                 </a>
               </li>
@@ -124,9 +122,7 @@
       </p>
     </div>
 
-    <div
-      class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4"
-    >
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
       {#each mainCategories.slice(0, 8) as category}
         <a href="/categories/{category.slug}" class="block h-full">
           <Card.Root
@@ -153,9 +149,7 @@
 
 <section class="bg-muted/50 px-6 py-16 md:py-24">
   <div class="mx-auto max-w-6xl">
-    <div
-      class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6"
-    >
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6">
       <Card.Root>
         <Card.Header class="text-center">
           <div class="mb-3 flex justify-center text-primary" aria-hidden="true">
@@ -252,8 +246,6 @@
         Create a searchable profile today.
       </p>
     </div>
-    <Button href="/list" size="lg" variant="secondary">
-      Get Listed Today
-    </Button>
+    <Button href="/list" size="lg" variant="secondary">Get Listed Today</Button>
   </div>
 </section>

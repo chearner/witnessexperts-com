@@ -6,8 +6,19 @@
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
   import { Separator } from "$lib/components/ui/separator";
+  import * as Sidebar from "$lib/components/ui/sidebar/index.js";
 
-  let { session = null }: { session?: Session | null } = $props();
+  let {
+    session = null,
+    hideMemberAuth = false,
+    showSidebarTrigger = false,
+  }: {
+    session?: Session | null;
+    /** Hide account email / sign-out when shown in the member sidebar shell */
+    hideMemberAuth?: boolean;
+    /** Show collapsible sidebar trigger (member shell) */
+    showSidebarTrigger?: boolean;
+  } = $props();
 
   let searchQuery = $state("");
   let mobileMenuOpen = $state(false);
@@ -24,6 +35,9 @@
   <div
     class="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 lg:gap-8 lg:px-6"
   >
+    {#if showSidebarTrigger}
+      <Sidebar.Trigger class="-ms-1 shrink-0 lg:flex" />
+    {/if}
     <a href="/" class="text-xl font-display shrink-0 font-semibold">
       <span>WitnessExperts</span><span class="text-lg">.com</span>
     </a>
@@ -102,7 +116,7 @@
     </form>
 
     <div class="hidden items-center gap-2 lg:flex">
-      {#if session?.user}
+      {#if session?.user && !hideMemberAuth}
         <Button href="/account" variant="ghost" size="sm">Account</Button>
         <span class="text-muted-foreground max-w-[120px] truncate text-sm" title={session.user.email ?? ""}>
           {session.user.email}
@@ -110,7 +124,7 @@
         <form method="POST" action="/logout" class="inline-flex">
           <Button type="submit" variant="outline" size="sm">Sign out</Button>
         </form>
-      {:else}
+      {:else if !session?.user}
         <Button href="/login" variant="outline" size="sm">Member Login</Button>
       {/if}
       <Button href="/list" size="sm">Get Listed Today</Button>
@@ -176,17 +190,19 @@
           class="w-full justify-start"
           onclick={() => (mobileMenuOpen = false)}>Account</Button
         >
-        <p class="text-muted-foreground px-2 py-1.5 text-sm">
-          {session.user.email}
-        </p>
-        <form method="POST" action="/logout" class="px-2">
-          <Button
-            type="submit"
-            variant="ghost"
-            class="w-full justify-start"
-            onclick={() => (mobileMenuOpen = false)}>Sign out</Button
-          >
-        </form>
+        {#if !hideMemberAuth}
+          <p class="text-muted-foreground px-2 py-1.5 text-sm">
+            {session.user.email}
+          </p>
+          <form method="POST" action="/logout" class="px-2">
+            <Button
+              type="submit"
+              variant="ghost"
+              class="w-full justify-start"
+              onclick={() => (mobileMenuOpen = false)}>Sign out</Button
+            >
+          </form>
+        {/if}
       {:else}
         <Button
           href="/login"

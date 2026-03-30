@@ -1,92 +1,216 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
+  import { page } from "$app/state";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
-  import { Alert, AlertDescription, AlertTitle } from "$lib/components/ui/alert";
+  import { Textarea } from "$lib/components/ui/textarea";
+  import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+  } from "$lib/components/ui/alert";
   import * as Card from "$lib/components/ui/card";
+  import { getCategoryBySlug, mainCategories } from "$lib/data/categories";
 
   let { data, form } = $props();
+
+  let displayName = $state("");
+  let emailVal = $state("");
+  let phoneVal = $state("");
+  let bioVal = $state("");
+  let categorySlug = $state("");
+  let subcategoryVal = $state("");
+
+  $effect(() => {
+    const f = form;
+    displayName =
+      (f?.display_name as string | undefined) ??
+      data.profile?.display_name ??
+      "";
+    emailVal = (f?.email as string | undefined) ?? data.email ?? "";
+    phoneVal = (f?.phone as string | undefined) ?? data.profile?.phone ?? "";
+    bioVal = (f?.bio as string | undefined) ?? data.profile?.bio ?? "";
+    categorySlug =
+      (f?.primary_category_slug as string | undefined) ??
+      data.profile?.primary_category_slug ??
+      "";
+    subcategoryVal =
+      (f?.subcategory as string | undefined) ?? data.profile?.subcategory ?? "";
+  });
+
+  const subcats = $derived(
+    getCategoryBySlug(categorySlug)?.subcategories ?? [],
+  );
+
+  function onCategoryChange() {
+    const allowed = getCategoryBySlug(categorySlug)?.subcategories ?? [];
+    if (subcategoryVal && !allowed.includes(subcategoryVal)) {
+      subcategoryVal = "";
+    }
+  }
+
+  const saved = $derived(page.url.searchParams.get("saved") === "1");
+  const emailPending = $derived(
+    page.url.searchParams.get("email") === "confirm",
+  );
 </script>
 
 <svelte:head>
   <title>Member account - WitnessExperts.com</title>
 </svelte:head>
 
-<section class="bg-primary px-6 py-10 text-primary-foreground">
-  <div class="mx-auto max-w-6xl">
-    <h1 class="text-2xl font-semibold tracking-tight md:text-3xl">Member account</h1>
-    <p class="mt-2 max-w-2xl text-primary-foreground/90">
-      Signed in as <span class="font-medium text-primary-foreground">{data.email}</span>
-      {#if data.profile?.display_name}
-        <span class="text-primary-foreground/80">
-          · Showing as <span class="font-medium text-primary-foreground">{data.profile.display_name}</span>
-        </span>
-      {/if}
+<div class="mx-auto w-full max-w-3xl px-4 py-8 md:px-6 md:py-10">
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold tracking-tight md:text-3xl">
+      Expert Profile
+    </h1>
+    <p class="text-muted-foreground mt-2 text-sm md:text-base">
+      Update how you appear on the directory and how we reach you.
     </p>
   </div>
-</section>
 
-<div class="mx-auto max-w-6xl px-6 py-12">
-  <div class="grid gap-6 lg:grid-cols-[1fr_280px]">
-    <Card.Root>
-      <Card.Header>
-        <Card.Title>Expert profile</Card.Title>
-        <Card.Description>
-          This name can be used for your public listing as we connect directory data to your account.
-        </Card.Description>
-      </Card.Header>
-      <Card.Content class="space-y-6">
-        {#if data.profileError}
+  {#if saved}
+    <Alert class="mb-6">
+      <AlertTitle>Profile saved</AlertTitle>
+      <AlertDescription>
+        Your changes were saved.
+        {#if emailPending}
+          Check your inbox to confirm your new email address if you changed it.
+        {/if}
+      </AlertDescription>
+    </Alert>
+  {/if}
+
+  <Card.Root class="max-w-2xl">
+    <Card.Content class="space-y-6">
+      {#if data.profileError}
+        <Alert variant="destructive">
+          <AlertTitle>Profile unavailable</AlertTitle>
+          <AlertDescription>{data.profileError}</AlertDescription>
+        </Alert>
+      {:else if data.profile}
+        {#if form?.message}
           <Alert variant="destructive">
-            <AlertTitle>Profile unavailable</AlertTitle>
-            <AlertDescription>{data.profileError}</AlertDescription>
+            <AlertTitle>Could not save</AlertTitle>
+            <AlertDescription>{form.message}</AlertDescription>
           </Alert>
-        {:else if data.profile}
-          {#if form?.message}
-            <Alert variant="destructive">
-              <AlertTitle>Could not save</AlertTitle>
-              <AlertDescription>{form.message}</AlertDescription>
-            </Alert>
-          {/if}
-          <form method="POST" class="space-y-4" use:enhance>
+        {/if}
+        <form method="POST" class="space-y-8" use:enhance>
+          <div class="space-y-4">
+            <h3 class="text-xl font-medium">Contact &amp; account</h3>
             <div class="space-y-2">
               <Label for="display_name">Display name</Label>
               <Input
                 id="display_name"
                 type="text"
                 name="display_name"
-                value={form?.display_name ?? data.profile.display_name ?? ""}
+                bind:value={displayName}
                 maxlength={120}
                 placeholder="e.g. Dr. Jane Smith"
                 autocomplete="name"
               />
               <p class="text-muted-foreground text-xs">
-                How you want to appear on your listing. You can change this anytime.
+                How you want to appear on your listing.
               </p>
             </div>
-            <Button type="submit">Save profile</Button>
-          </form>
-        {/if}
-        <p class="text-muted-foreground text-sm">
-          Password: use
-          <Button href="/forgot-password" variant="link" class="inline h-auto p-0 text-sm"
-            >forgot password</Button
-          >
-          to receive a reset link.
-        </p>
-      </Card.Content>
-    </Card.Root>
+            <div class="space-y-2">
+              <Label for="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                name="email"
+                bind:value={emailVal}
+                required
+                autocomplete="email"
+              />
+              <p class="text-muted-foreground text-xs">
+                Changing your email may require confirming the new address
+                (Supabase will email you).
+              </p>
+            </div>
+            <div class="space-y-2">
+              <Label for="phone"
+                >Phone <span class="text-muted-foreground font-normal"
+                  >(optional)</span
+                ></Label
+              >
+              <Input
+                id="phone"
+                type="tel"
+                name="phone"
+                bind:value={phoneVal}
+                maxlength={40}
+                placeholder="e.g. +1 555 123 4567"
+                autocomplete="tel"
+              />
+            </div>
+          </div>
 
-    <Card.Root>
-      <Card.Header>
-        <Card.Title class="text-base">Session</Card.Title>
-      </Card.Header>
-      <Card.Content class="space-y-3">
-        <form method="POST" action="/logout">
-          <Button type="submit" variant="outline" class="w-full">Sign out</Button>
+          <div class="space-y-4">
+            <h3 class="text-xl font-medium">Practice focus</h3>
+            <div class="space-y-2">
+              <Label for="primary_category_slug">Primary category</Label>
+              <select
+                id="primary_category_slug"
+                name="primary_category_slug"
+                class="border-input bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 h-10 w-full rounded-xl border px-3 text-sm outline-none focus-visible:ring-[3px]"
+                bind:value={categorySlug}
+                onchange={onCategoryChange}
+              >
+                <option value="">— Select a category —</option>
+                {#each mainCategories as cat (cat.slug)}
+                  <option value={cat.slug}>{cat.name}</option>
+                {/each}
+              </select>
+            </div>
+            <div class="space-y-2">
+              <Label for="subcategory">Sub-area / specialty</Label>
+              <select
+                id="subcategory"
+                name="subcategory"
+                class="border-input bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 h-10 w-full rounded-xl border px-3 text-sm outline-none focus-visible:ring-[3px]"
+                bind:value={subcategoryVal}
+              >
+                <option value="">— Optional —</option>
+                {#if subcategoryVal && !subcats.includes(subcategoryVal)}
+                  <option value={subcategoryVal}>{subcategoryVal}</option>
+                {/if}
+                {#each subcats as sub (sub)}
+                  <option value={sub}>{sub}</option>
+                {/each}
+              </select>
+              <p class="text-muted-foreground text-xs">
+                Narrow your focus within the primary category (optional).
+              </p>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <Label for="bio">Professional summary</Label>
+            <Textarea
+              id="bio"
+              name="bio"
+              bind:value={bioVal}
+              maxlength={2000}
+              rows={5}
+              placeholder="Brief background, credentials, or areas of testimony (optional)."
+            />
+            <p class="text-muted-foreground text-xs">Up to 2,000 characters.</p>
+          </div>
+
+          <Button type="submit">Save profile</Button>
         </form>
-      </Card.Content>
-    </Card.Root>
-  </div>
+      {/if}
+      <p class="text-muted-foreground text-sm">
+        Password: use
+        <Button
+          href="/forgot-password"
+          variant="link"
+          class="inline h-auto p-0 text-sm">forgot password</Button
+        >
+        to receive a reset link. Sign out from the menu on your name in the sidebar.
+      </p>
+    </Card.Content>
+  </Card.Root>
 </div>

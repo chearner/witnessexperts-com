@@ -5,15 +5,27 @@ export type Database = {
         Row: {
           id: string;
           display_name: string | null;
+          primary_category_slug: string | null;
+          subcategory: string | null;
+          bio: string | null;
+          phone: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: {
           id: string;
           display_name?: string | null;
+          primary_category_slug?: string | null;
+          subcategory?: string | null;
+          bio?: string | null;
+          phone?: string | null;
         };
         Update: {
           display_name?: string | null;
+          primary_category_slug?: string | null;
+          subcategory?: string | null;
+          bio?: string | null;
+          phone?: string | null;
         };
         Relationships: [];
       };
