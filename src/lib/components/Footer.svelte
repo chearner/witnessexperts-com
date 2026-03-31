@@ -98,7 +98,7 @@
         </h4>
         <ul class="flex flex-col items-center gap-1 md:items-start">
           <li>
-            <Button href="/list" variant="ghost" size="sm"
+            <Button href="/register" variant="ghost" size="sm"
               >Get Listed Today</Button
             >
           </li>

@@ -137,7 +137,7 @@
       {:else if !session?.user}
         <Button href="/login" variant="outline" size="sm">Member Login</Button>
       {/if}
-      <Button href="/list" size="sm">Get Listed Today</Button>
+      <Button href="/register" size="sm">Get Listed Today</Button>
     </div>
 
     <Button
@@ -228,7 +228,7 @@
         >
       {/if}
       <Button
-        href="/list"
+        href="/register"
         variant="ghost"
         class="w-full justify-start"
         onclick={() => (mobileMenuOpen = false)}>Get Listed Today</Button

@@ -67,13 +67,18 @@
             )}
           >
             <Avatar.Root class="size-8 rounded-full">
-              <Avatar.Fallback class="rounded-full text-xs font-medium">{initials()}</Avatar.Fallback>
+              <Avatar.Fallback class="rounded-full text-xs font-medium"
+                >{initials()}</Avatar.Fallback
+              >
             </Avatar.Root>
             <div class="grid min-w-0 flex-1 text-start text-sm leading-tight">
               <span class="truncate font-medium">{name}</span>
-              <span class="text-muted-foreground truncate text-xs">{email}</span>
+              <span class="text-muted-foreground truncate text-xs">{email}</span
+              >
             </div>
-            <MoreVerticalIcon class="text-muted-foreground ms-auto size-4 shrink-0" />
+            <MoreVerticalIcon
+              class="text-muted-foreground ms-auto size-4 shrink-0"
+            />
           </button>
         {/snippet}
       </DropdownMenu.Trigger>
@@ -86,11 +91,14 @@
         <DropdownMenu.Label class="p-0 font-normal">
           <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
             <Avatar.Root class="size-8 rounded-full">
-              <Avatar.Fallback class="rounded-full text-xs font-medium">{initials()}</Avatar.Fallback>
+              <Avatar.Fallback class="rounded-full text-xs font-medium"
+                >{initials()}</Avatar.Fallback
+              >
             </Avatar.Root>
             <div class="grid min-w-0 flex-1 text-start text-sm leading-tight">
               <span class="truncate font-semibold">{name}</span>
-              <span class="text-muted-foreground truncate text-xs">{email}</span>
+              <span class="text-muted-foreground truncate text-xs">{email}</span
+              >
             </div>
           </div>
         </DropdownMenu.Label>
@@ -99,14 +107,6 @@
         {/if}
         <DropdownMenu.Separator />
         <DropdownMenu.Group>
-          <DropdownMenu.Item
-            onSelect={() => {
-              goto("/account");
-            }}
-          >
-            <UserRoundIcon />
-            Profile
-          </DropdownMenu.Item>
           <DropdownMenu.Item
             onSelect={() => {
               dark = toggleTheme() === "dark";

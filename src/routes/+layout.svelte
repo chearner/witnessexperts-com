@@ -16,7 +16,7 @@
   <link rel="icon" href={favicon} />
 </svelte:head>
 
-<Toaster richColors />
+<Toaster richColors position="bottom-right" />
 
 {#if loggedIn}
   <Sidebar.Provider>

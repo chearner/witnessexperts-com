@@ -9,6 +9,7 @@ export type Database = {
           subcategory: string | null;
           bio: string | null;
           phone: string | null;
+          listing_active: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -19,6 +20,7 @@ export type Database = {
           subcategory?: string | null;
           bio?: string | null;
           phone?: string | null;
+          listing_active?: boolean;
         };
         Update: {
           display_name?: string | null;
@@ -26,6 +28,7 @@ export type Database = {
           subcategory?: string | null;
           bio?: string | null;
           phone?: string | null;
+          listing_active?: boolean;
         };
         Relationships: [];
       };

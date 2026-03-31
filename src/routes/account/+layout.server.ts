@@ -1,7 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 
-export const load: LayoutServerLoad = async ({ locals }) => {
+export const load: LayoutServerLoad = async ({ locals, parent }) => {
   const {
     data: { user },
   } = await locals.supabase.auth.getUser();
@@ -14,5 +14,5 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     );
   }
 
-  return {};
+  return await parent();
 };

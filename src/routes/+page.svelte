@@ -246,6 +246,6 @@
         Create a searchable profile today.
       </p>
     </div>
-    <Button href="/list" size="lg" variant="secondary">Get Listed Today</Button>
+    <Button href="/register" size="lg" variant="secondary">Get Listed Today</Button>
   </div>
 </section>

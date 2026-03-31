@@ -1,7 +1,9 @@
 <script lang="ts">
   import { page } from "$app/state";
   import * as Sidebar from "$lib/components/ui/sidebar/index.js";
+  import CircleUserIcon from "@lucide/svelte/icons/circle-user";
   import HomeIcon from "@lucide/svelte/icons/home";
+  import SettingsIcon from "@lucide/svelte/icons/settings";
   import UserRoundIcon from "@lucide/svelte/icons/user-round";
 </script>
 
@@ -24,14 +26,42 @@
     </Sidebar.MenuItem>
     <Sidebar.MenuItem>
       <Sidebar.MenuButton
-        tooltipContent="Profile"
+        tooltipContent="Account"
         isActive={page.url.pathname === "/account"}
         class="w-full"
       >
         {#snippet child({ props })}
           <a href="/account" {...props}>
+            <CircleUserIcon />
+            <span>Account</span>
+          </a>
+        {/snippet}
+      </Sidebar.MenuButton>
+    </Sidebar.MenuItem>
+    <Sidebar.MenuItem>
+      <Sidebar.MenuButton
+        tooltipContent="Expert profile"
+        isActive={page.url.pathname === "/account/profile"}
+        class="w-full"
+      >
+        {#snippet child({ props })}
+          <a href="/account/profile" {...props}>
             <UserRoundIcon />
-            <span>Profile</span>
+            <span>Expert profile</span>
+          </a>
+        {/snippet}
+      </Sidebar.MenuButton>
+    </Sidebar.MenuItem>
+    <Sidebar.MenuItem>
+      <Sidebar.MenuButton
+        tooltipContent="Settings"
+        isActive={page.url.pathname === "/account/settings"}
+        class="w-full"
+      >
+        {#snippet child({ props })}
+          <a href="/account/settings" {...props}>
+            <SettingsIcon />
+            <span>Settings</span>
           </a>
         {/snippet}
       </Sidebar.MenuButton>
