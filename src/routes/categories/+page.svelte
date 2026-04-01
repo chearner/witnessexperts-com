@@ -3,6 +3,7 @@
   import { Badge } from "$lib/components/ui/badge";
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
+  import { Heading } from "$lib/components/ui/heading";
 </script>
 
 <svelte:head>
@@ -29,15 +30,11 @@
       <Card.Root>
         <Card.Header>
           <div class="flex flex-wrap items-baseline justify-between gap-4">
-            <h2 class="text-2xl font-semibold leading-tight">
-              <Button
-                href="/categories/{category.slug}"
-                variant="link"
-                class="h-auto p-0 text-2xl font-semibold"
-              >
+            <Button href="/categories/{category.slug}" variant="link">
+              <Heading level={2}>
                 {category.name}
-              </Button>
-            </h2>
+              </Heading>
+            </Button>
             {#if category.expertCount}
               <Badge variant="outline">{category.expertCount} experts</Badge>
             {/if}
@@ -48,14 +45,20 @@
             <div class="flex flex-wrap gap-2">
               {#each category.subcategories.slice(0, 12) as sub}
                 <Badge
-                  href="/categories/{category.slug}?sub={encodeURIComponent(sub)}"
+                  href="/categories/{category.slug}?sub={encodeURIComponent(
+                    sub,
+                  )}"
                   variant="secondary"
                 >
                   {sub}
                 </Badge>
               {/each}
               {#if category.subcategories.length > 12}
-                <Button href="/categories/{category.slug}" variant="link" size="sm">
+                <Button
+                  href="/categories/{category.slug}"
+                  variant="link"
+                  size="sm"
+                >
                   +{category.subcategories.length - 12} more
                 </Button>
               {/if}

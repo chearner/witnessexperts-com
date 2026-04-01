@@ -2,8 +2,8 @@
   import "../app.css";
   import favicon from "$lib/assets/favicon.svg";
   import AppSidebar from "$lib/components/app-sidebar.svelte";
-  import Header from "$lib/components/Header.svelte";
-  import Footer from "$lib/components/Footer.svelte";
+  import AppHeader from "$lib/components/app-header.svelte";
+  import AppFooter from "$lib/components/app-footer.svelte";
   import * as Sidebar from "$lib/components/ui/sidebar/index.js";
   import { Toaster } from "$lib/components/ui/sonner/index.js";
 
@@ -27,18 +27,18 @@
     />
     <Sidebar.Inset>
       <div class="bg-background flex min-h-svh flex-col">
-        <Header session={data.session} hideMemberAuth showSidebarTrigger />
+        <AppHeader session={data.session} hideMemberAuth showSidebarTrigger />
         <main class="bg-background min-h-[calc(100vh-4rem-200px)] flex-1">
           {@render children()}
         </main>
-        <Footer />
+        <AppFooter />
       </div>
     </Sidebar.Inset>
   </Sidebar.Provider>
 {:else}
-  <Header session={data.session} />
+  <AppHeader session={data.session} />
   <main class="bg-background min-h-[calc(100vh-4rem-200px)] flex-1">
     {@render children()}
   </main>
-  <Footer />
+  <AppFooter />
 {/if}
