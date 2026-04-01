@@ -57,51 +57,65 @@
   </section>
 
   <div class="mx-auto max-w-6xl px-6 py-12">
-    {#if category.subcategories && category.subcategories.length > 0}
-      <section class="mb-12 space-y-6">
-        <h2>Subcategories</h2>
-        <div
-          class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4"
-        >
-          {#each category.subcategories as sub}
-            <a href="/search?q={encodeURIComponent(sub)}&category={category.slug}">
-              <Card.Root class="h-full transition-shadow hover:shadow-md">
-                <Card.Header>
-                  <Card.Title class="text-base">{sub}</Card.Title>
-                </Card.Header>
-              </Card.Root>
-            </a>
+    <div
+      class="grid gap-10 lg:grid-cols-[1fr_minmax(280px,340px)] lg:items-start lg:gap-12"
+    >
+      {#if category.subcategories && category.subcategories.length > 0}
+        <section class="min-w-0 space-y-6">
+          <h2>Subcategories</h2>
+          <div
+            class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4"
+          >
+            {#each category.subcategories as sub}
+              <a
+                href="/search?q={encodeURIComponent(sub)}&category={category.slug}"
+              >
+                <Card.Root class="h-full transition-shadow hover:shadow-md">
+                  <Card.Header>
+                    <Card.Title class="text-base">{sub}</Card.Title>
+                  </Card.Header>
+                </Card.Root>
+              </a>
+            {/each}
+          </div>
+        </section>
+      {/if}
+
+      <aside
+        class="space-y-6 {category.subcategories?.length
+          ? 'lg:sticky lg:top-24'
+          : 'lg:col-span-full lg:mx-auto lg:max-w-2xl'}"
+      >
+        <h2>Featured experts</h2>
+        <div class="grid gap-6">
+          {#each [1, 2, 3] as _}
+            <Card.Root>
+              <Card.Content class="flex gap-4">
+                <Skeleton class="size-16 shrink-0 rounded-full" />
+                <div class="flex min-w-0 flex-1 flex-col gap-2">
+                  <Skeleton class="h-3 w-full" />
+                  <Skeleton class="h-3 w-[80%]" />
+                  <Skeleton class="h-3 w-1/2" />
+                </div>
+              </Card.Content>
+            </Card.Root>
           {/each}
         </div>
-      </section>
-    {/if}
-
-    <section class="space-y-6">
-      <h2>Featured experts</h2>
-      <p class="text-muted-foreground text-sm">
-        Expert listings will appear here.
-        <Button href="/list" variant="link" class="inline h-auto p-0 text-sm"
-          >Get listed</Button
-        >
-        to appear in search results.
-      </p>
-      <div
-        class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6"
-      >
-        {#each [1, 2, 3] as _}
-          <Card.Root>
-            <Card.Content class="flex gap-4">
-              <Skeleton class="size-16 shrink-0 rounded-full" />
-              <div class="flex min-w-0 flex-1 flex-col gap-2">
-                <Skeleton class="h-3 w-full" />
-                <Skeleton class="h-3 w-[80%]" />
-                <Skeleton class="h-3 w-1/2" />
-              </div>
-            </Card.Content>
-          </Card.Root>
-        {/each}
-      </div>
-    </section>
+        {#if !page.data.session?.user}
+          <p class="text-muted-foreground text-sm">
+            Expert listings will appear here.
+            <Button href="/list" variant="link" class="inline h-auto p-0 text-sm"
+              >Get listed</Button
+            >
+            to appear in search results.
+          </p>
+        {:else}
+          <p class="text-muted-foreground text-sm">
+            Expert listings will appear here.
+          </p>
+        {/if}
+      </aside>
+    </div>
   </div>
 {:else}
   <div class="mx-auto max-w-lg px-6 py-24 text-center">

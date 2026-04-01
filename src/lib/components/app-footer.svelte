@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from "$app/state";
   import { HugeiconsIcon } from "@hugeicons/svelte";
   import {
     LayoutGridIcon,
@@ -97,11 +98,13 @@
           Experts
         </h4>
         <ul class="flex flex-col items-center gap-1 md:items-start">
-          <li>
-            <Button href="/register" variant="ghost" size="sm"
-              >Get Listed Today</Button
-            >
-          </li>
+          {#if !page.data.session?.user}
+            <li>
+              <Button href="/register" variant="ghost" size="sm"
+                >Get Listed Today</Button
+              >
+            </li>
+          {/if}
           <li>
             <Button href="/login" variant="ghost" size="sm">Member login</Button>
           </li>

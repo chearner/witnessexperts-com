@@ -137,7 +137,9 @@
       {:else if !session?.user}
         <Button href="/login" variant="outline" size="sm">Member Login</Button>
       {/if}
-      <Button href="/register" size="sm">Get Listed Today</Button>
+      {#if !session?.user}
+        <Button href="/register" size="sm">Get Listed Today</Button>
+      {/if}
     </div>
 
     <Button
@@ -227,12 +229,14 @@
           onclick={() => (mobileMenuOpen = false)}>Member Login</Button
         >
       {/if}
-      <Button
-        href="/register"
-        variant="ghost"
-        class="w-full justify-start"
-        onclick={() => (mobileMenuOpen = false)}>Get Listed Today</Button
-      >
+      {#if !session?.user}
+        <Button
+          href="/register"
+          variant="ghost"
+          class="w-full justify-start"
+          onclick={() => (mobileMenuOpen = false)}>Get Listed Today</Button
+        >
+      {/if}
     </div>
   {/if}
 </header>

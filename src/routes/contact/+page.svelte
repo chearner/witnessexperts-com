@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from "$app/state";
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
 </script>
@@ -39,13 +40,15 @@
         >
         from the main navigation.
       </p>
-      <p>
-        For listing inquiries, see <Button
-          href="/list"
-          variant="link"
-          class="inline h-auto p-0 text-sm">Get listed today</Button
-        >.
-      </p>
+      {#if !page.data.session?.user}
+        <p>
+          For listing inquiries, see <Button
+            href="/list"
+            variant="link"
+            class="inline h-auto p-0 text-sm">Get listed today</Button
+          >.
+        </p>
+      {/if}
     </Card.Content>
     <Card.Footer class="justify-center">
       <Button href="/" variant="outline">Back to home</Button>

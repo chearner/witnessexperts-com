@@ -35,14 +35,11 @@
         <Sidebar.MenuButton size="lg" class="hover:bg-sidebar-accent/80">
           {#snippet child({ props })}
             <a href="/" {...props}>
-              <span
-                class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg font-display text-sm font-semibold"
-              >
-                WE
-              </span>
               <div class="grid flex-1 text-start text-sm leading-tight">
-                <span class="truncate font-semibold">WitnessExperts</span>
-                <span class="text-muted-foreground truncate text-xs">Member area</span>
+                <span class="truncate font-semibold">WitnessExperts.com</span>
+                <span class="text-muted-foreground truncate text-xs"
+                  >Member area</span
+                >
               </div>
             </a>
           {/snippet}
@@ -53,12 +50,10 @@
   <Sidebar.Content>
     <NavMemberLinks />
   </Sidebar.Content>
-  <Sidebar.Footer class="border-sidebar-border bg-sidebar-accent/35 border-t p-2">
-    <NavUser
-      name={displayName}
-      email={email ?? ""}
-      {profileError}
-    />
+  <Sidebar.Footer
+    class="border-sidebar-border bg-sidebar-accent/35 border-t p-2"
+  >
+    <NavUser name={displayName} email={email ?? ""} {profileError} />
   </Sidebar.Footer>
   <Sidebar.Rail />
 </Sidebar.Root>

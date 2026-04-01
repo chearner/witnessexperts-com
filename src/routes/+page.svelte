@@ -235,17 +235,19 @@
   </div>
 </section>
 
-<section
-  class="bg-primary px-6 py-16 text-center text-primary-foreground md:py-24"
->
-  <div class="mx-auto max-w-6xl space-y-6">
-    <div class="mx-auto max-w-lg space-y-4">
-      <h2>Are You an Expert Witness?</h2>
-      <p class="text-balance text-primary-foreground/90">
-        Join our directory and connect with attorneys seeking your expertise.
-        Create a searchable profile today.
-      </p>
+{#if !data.session?.user}
+  <section
+    class="bg-primary px-6 py-16 text-center text-primary-foreground md:py-24"
+  >
+    <div class="mx-auto max-w-6xl space-y-6">
+      <div class="mx-auto max-w-lg space-y-4">
+        <h2>Are You an Expert Witness?</h2>
+        <p class="text-balance text-primary-foreground/90">
+          Join our directory and connect with attorneys seeking your expertise.
+          Create a searchable profile today.
+        </p>
+      </div>
+      <Button href="/register" size="lg" variant="secondary">Get Listed Today</Button>
     </div>
-    <Button href="/register" size="lg" variant="secondary">Get Listed Today</Button>
-  </div>
-</section>
+  </section>
+{/if}
