@@ -1,4 +1,5 @@
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
+import type { Category } from "$lib/data/categories";
 import type { Database } from "$lib/supabase/database.types";
 
 // See https://svelte.dev/docs/kit/types#app.d.ts
@@ -12,6 +13,8 @@ declare global {
 		}
 		interface PageData {
 			session: Session | null;
+			categories: Category[];
+			categoriesError: string | null;
 		}
 		// interface PageState {}
 		// interface Platform {}

@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { mainCategories } from "$lib/data/categories";
+  import type { PageData } from "./$types";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
   import { Textarea } from "$lib/components/ui/textarea";
   import * as Card from "$lib/components/ui/card";
   import { cn } from "$lib/utils.js";
+
+  let { data }: { data: PageData } = $props();
 
   let submitted = $state(false);
   let formData = $state({
@@ -121,7 +123,7 @@
                 class={selectClass}
               >
                 <option value="">Select a category</option>
-                {#each mainCategories as cat}
+                {#each data.categories as cat}
                   <option value={cat.slug}>{cat.name}</option>
                 {/each}
               </select>

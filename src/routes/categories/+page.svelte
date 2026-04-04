@@ -1,11 +1,13 @@
 <script lang="ts">
+  import type { PageData } from "./$types";
   import { page } from "$app/state";
-  import { mainCategories } from "$lib/data/categories";
   import { Badge } from "$lib/components/ui/badge";
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
   import { Heading } from "$lib/components/ui/heading";
   import { Skeleton } from "$lib/components/ui/skeleton";
+
+  let { data }: { data: PageData } = $props();
 </script>
 
 <svelte:head>
@@ -31,7 +33,7 @@
     class="grid gap-10 lg:grid-cols-[1fr_minmax(280px,340px)] lg:items-start lg:gap-12"
   >
     <div class="flex min-w-0 flex-col gap-8">
-      {#each mainCategories as category}
+      {#each data.categories as category}
         <Card.Root>
           <Card.Header>
             <div class="flex flex-wrap items-baseline justify-between gap-4">

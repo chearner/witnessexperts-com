@@ -1,7 +1,12 @@
+import { fetchCategories } from "$lib/server/categories";
 import type { LayoutServerLoad } from "./$types";
 
 export const load: LayoutServerLoad = async ({ locals }) => {
   const session = locals.session;
+
+  const { categories, error: categoriesError } = await fetchCategories(
+    locals.supabase,
+  );
 
   const {
     data: { user },
@@ -10,6 +15,8 @@ export const load: LayoutServerLoad = async ({ locals }) => {
   if (!user) {
     return {
       session,
+      categories,
+      categoriesError,
       email: null as string | null,
       profile: null as {
         id: string;
@@ -47,6 +54,8 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       console.error(error);
       return {
         session,
+        categories,
+        categoriesError,
         email: user.email ?? null,
         profile: null,
         profileError:
@@ -58,6 +67,8 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 
   return {
     session,
+    categories,
+    categoriesError,
     email: user.email ?? null,
     profile,
     profileError: null as string | null,

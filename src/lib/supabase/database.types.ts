@@ -1,6 +1,60 @@
 export type Database = {
   public: {
     Tables: {
+      categories: {
+        Row: {
+          id: string;
+          slug: string;
+          name: string;
+          description: string | null;
+          expert_count: number | null;
+          sort_order: number;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          name: string;
+          description?: string | null;
+          expert_count?: number | null;
+          sort_order?: number;
+        };
+        Update: {
+          slug?: string;
+          name?: string;
+          description?: string | null;
+          expert_count?: number | null;
+          sort_order?: number;
+        };
+        Relationships: [];
+      };
+      subcategories: {
+        Row: {
+          id: string;
+          category_id: string;
+          name: string;
+          sort_order: number;
+        };
+        Insert: {
+          id?: string;
+          category_id: string;
+          name: string;
+          sort_order?: number;
+        };
+        Update: {
+          category_id?: string;
+          name?: string;
+          sort_order?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "subcategories_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           id: string;

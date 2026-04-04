@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { mainCategories, getAllSubcategories } from '$lib/data/categories';
+	import type { PageData } from './$types';
+	import { page } from '$app/state';
+	import { getAllSubcategories } from '$lib/data/categories';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 
-	const searchParams = $derived($page.url.searchParams);
+	let { data }: { data: PageData } = $props();
+
+	const searchParams = $derived(page.url.searchParams);
 	const query = $derived(searchParams.get('q') ?? '');
 	const categoryFilter = $derived(searchParams.get('category') ?? '');
 
-	const allSubcategories = getAllSubcategories();
+	const allSubcategories = $derived(getAllSubcategories(data.categories));
 	const searchResults = $derived(
 		query
 			? allSubcategories.filter(
@@ -22,8 +25,8 @@
 
 	const filteredCategories = $derived(
 		categoryFilter
-			? mainCategories.filter((c) => c.slug === categoryFilter)
-			: mainCategories
+			? data.categories.filter((c) => c.slug === categoryFilter)
+			: data.categories
 	);
 </script>
 
@@ -63,10 +66,12 @@
 	{#if query}
 		{#if searchResults.length > 0}
 			<section>
-				<h2 class="mb-2 text-2xl font-semibold">Matching Specialties</h2>
-				<p class="mb-8 text-muted-foreground">
-					{searchResults.length} matching {searchResults.length === 1 ? 'specialty' : 'specialties'}
-				</p>
+				<div class="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+					<h2 class="text-2xl font-semibold">Matching Specialties</h2>
+					<p class="m-0 shrink-0 text-sm text-muted-foreground tabular-nums">
+						{searchResults.length} matching {searchResults.length === 1 ? 'specialty' : 'specialties'}
+					</p>
+				</div>
 				<div class="flex flex-col gap-2">
 					{#each searchResults.slice(0, 50) as { subcategory, category }}
 						<a
@@ -102,7 +107,7 @@
 				Enter a search term above or select a category to find expert witnesses.
 			</p>
 			<div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">
-				{#each mainCategories as cat}
+				{#each data.categories as cat}
 					<a
 						href="/categories/{cat.slug}"
 						class="flex items-center gap-2 rounded-md border border-border bg-card p-6 font-medium text-foreground no-underline transition-all hover:border-primary/40 hover:text-primary hover:shadow-md"

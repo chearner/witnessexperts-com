@@ -1,12 +1,15 @@
 <script lang="ts">
+  import type { PageData } from "./$types";
   import { page } from "$app/state";
   import { getCategoryBySlug } from "$lib/data/categories";
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
   import { Skeleton } from "$lib/components/ui/skeleton";
 
+  let { data }: { data: PageData } = $props();
+
   const slug = $derived(page.params.slug ?? "");
-  const category = $derived(getCategoryBySlug(slug));
+  const category = $derived(getCategoryBySlug(data.categories, slug));
 </script>
 
 <svelte:head>

@@ -6,7 +6,6 @@
     Location01Icon,
     MailSend01Icon,
   } from "@hugeicons/core-free-icons";
-  import { mainCategories } from "$lib/data/categories";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
@@ -123,7 +122,7 @@
     </div>
 
     <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
-      {#each mainCategories.slice(0, 8) as category}
+      {#each data.categories.slice(0, 8) as category}
         <a href="/categories/{category.slug}" class="block h-full">
           <Card.Root
             class="h-full transition-shadow hover:-translate-y-0.5 hover:shadow-md"

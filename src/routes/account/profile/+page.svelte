@@ -13,7 +13,7 @@
   } from "$lib/components/ui/alert";
   import { toast } from "$lib/components/ui/sonner";
   import * as Card from "$lib/components/ui/card";
-  import { getCategoryBySlug, mainCategories } from "$lib/data/categories";
+  import { getCategoryBySlug } from "$lib/data/categories";
 
   let { data, form } = $props();
 
@@ -42,11 +42,12 @@
   });
 
   const subcats = $derived(
-    getCategoryBySlug(categorySlug)?.subcategories ?? [],
+    getCategoryBySlug(data.categories, categorySlug)?.subcategories ?? [],
   );
 
   function onCategoryChange() {
-    const allowed = getCategoryBySlug(categorySlug)?.subcategories ?? [];
+    const allowed =
+      getCategoryBySlug(data.categories, categorySlug)?.subcategories ?? [];
     if (subcategoryVal && !allowed.includes(subcategoryVal)) {
       subcategoryVal = "";
     }
@@ -149,7 +150,7 @@
                 onchange={onCategoryChange}
               >
                 <option value="">— Select a category —</option>
-                {#each mainCategories as cat (cat.slug)}
+                {#each data.categories as cat (cat.slug)}
                   <option value={cat.slug}>{cat.name}</option>
                 {/each}
               </select>

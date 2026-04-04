@@ -19,7 +19,7 @@
         {#snippet child({ props })}
           <a href="/" {...props}>
             <HomeIcon />
-            <span>Site home</span>
+            <span>Home</span>
           </a>
         {/snippet}
       </Sidebar.MenuButton>
@@ -40,14 +40,14 @@
     </Sidebar.MenuItem>
     <Sidebar.MenuItem>
       <Sidebar.MenuButton
-        tooltipContent="Expert profile"
+        tooltipContent="Profile"
         isActive={page.url.pathname === "/account/profile"}
         class="w-full"
       >
         {#snippet child({ props })}
           <a href="/account/profile" {...props}>
             <UserRoundIcon />
-            <span>Expert profile</span>
+            <span>Profile</span>
           </a>
         {/snippet}
       </Sidebar.MenuButton>
