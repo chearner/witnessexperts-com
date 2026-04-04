@@ -44,6 +44,8 @@ export const actions: Actions = {
 		const subcategory = formData.get("subcategory")?.toString().trim() ?? "";
 		const bio = formData.get("bio")?.toString().trim() ?? "";
 		const phone = formData.get("phone")?.toString().trim() ?? "";
+		const usStateCodeRaw = formData.get("us_state_code")?.toString().trim() ?? "";
+		const usStateCode = usStateCodeRaw.toUpperCase() || null;
 
 		const fieldSnapshot = {
 			display_name: displayName,
@@ -51,6 +53,7 @@ export const actions: Actions = {
 			subcategory,
 			bio,
 			phone,
+			us_state_code: usStateCodeRaw,
 		};
 
 		const categorySlugOrNull = primaryCategorySlug || null;
@@ -105,6 +108,20 @@ export const actions: Actions = {
 			});
 		}
 
+		if (usStateCode) {
+			const { data: st } = await locals.supabase
+				.from("us_states")
+				.select("code")
+				.eq("code", usStateCode)
+				.maybeSingle();
+			if (!st) {
+				return fail(400, {
+					message: "Please choose a valid US state.",
+					...fieldSnapshot,
+				});
+			}
+		}
+
 		const { error: profileError } = await locals.supabase
 			.from("profiles")
 			.update({
@@ -113,6 +130,7 @@ export const actions: Actions = {
 				subcategory: subcategory || null,
 				bio: bio || null,
 				phone: phone || null,
+				us_state_code: usStateCode,
 			})
 			.eq("id", user.id);
 

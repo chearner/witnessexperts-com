@@ -1,5 +1,6 @@
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 import type { Category } from "$lib/data/categories";
+import type { UsState } from "$lib/data/us-states";
 import type { Database } from "$lib/supabase/database.types";
 
 // See https://svelte.dev/docs/kit/types#app.d.ts
@@ -15,6 +16,8 @@ declare global {
 			session: Session | null;
 			categories: Category[];
 			categoriesError: string | null;
+			usStates: UsState[];
+			usStatesError: string | null;
 		}
 		// interface PageState {}
 		// interface Platform {}

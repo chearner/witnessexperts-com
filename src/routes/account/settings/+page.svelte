@@ -43,7 +43,7 @@
   <title>Account settings - WitnessExperts.com</title>
 </svelte:head>
 
-<div class="mx-auto w-full max-w-3xl px-4 py-8 md:px-6 md:py-10">
+<div class="mx-auto w-full max-w-6xl px-4 py-8 md:px-6 md:py-10">
   <div class="mb-8">
     <h1 class="text-2xl font-semibold tracking-tight md:text-3xl">Settings</h1>
     <p class="text-muted-foreground mt-2 text-sm md:text-base">
@@ -52,7 +52,8 @@
     </p>
   </div>
 
-  <div class="flex max-w-2xl flex-col gap-10">
+  <div class="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:items-start lg:gap-12">
+    <div class="flex min-w-0 flex-col gap-10 lg:col-span-2">
     <Card.Root>
       <Card.Header>
         <Card.Title>Directory listing</Card.Title>
@@ -123,7 +124,7 @@
     <Separator />
 
     <section
-      class="border-destructive/40 bg-destructive/5 max-w-2xl rounded-2xl border p-6"
+      class="border-destructive/40 bg-destructive/5 rounded-2xl border p-6"
       aria-labelledby="danger-zone-heading"
     >
       <h2 id="danger-zone-heading" class="text-destructive text-lg font-semibold">
@@ -190,5 +191,33 @@
         </div>
       {/if}
     </section>
+    </div>
+
+    <aside class="space-y-6 lg:sticky lg:top-24">
+      <Card.Root>
+        <Card.Header>
+          <Card.Title class="text-lg">Visibility tips</Card.Title>
+          <Card.Description>
+            Hiding your listing is reversible; deleting your account is not.
+          </Card.Description>
+        </Card.Header>
+        <Card.Content class="text-muted-foreground space-y-3 text-sm">
+          <p>
+            <strong class="text-foreground font-medium">Show in directory</strong>
+            controls whether your expert profile can appear in public search and
+            browse as those features go live.
+          </p>
+          <p>
+            Turn it off anytime if you need a break—your login and profile data
+            stay until you delete the account.
+          </p>
+          <p>
+            <strong class="text-foreground font-medium">Account deletion</strong>
+            requires hiding your listing first, so you cannot remove your profile
+            from the directory by accident.
+          </p>
+        </Card.Content>
+      </Card.Root>
+    </aside>
   </div>
 </div>

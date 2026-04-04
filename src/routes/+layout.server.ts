@@ -1,10 +1,14 @@
 import { fetchCategories } from "$lib/server/categories";
+import { fetchUsStates } from "$lib/server/us-states";
 import type { LayoutServerLoad } from "./$types";
 
 export const load: LayoutServerLoad = async ({ locals }) => {
   const session = locals.session;
 
   const { categories, error: categoriesError } = await fetchCategories(
+    locals.supabase,
+  );
+  const { usStates, error: usStatesError } = await fetchUsStates(
     locals.supabase,
   );
 
@@ -17,6 +21,8 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       session,
       categories,
       categoriesError,
+      usStates,
+      usStatesError,
       email: null as string | null,
       profile: null as {
         id: string;
@@ -25,6 +31,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
         subcategory: string | null;
         bio: string | null;
         phone: string | null;
+        us_state_code: string | null;
         listing_active: boolean;
         created_at: string;
         updated_at: string;
@@ -36,7 +43,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
   let { data: profile } = await locals.supabase
     .from("profiles")
     .select(
-      "id, display_name, primary_category_slug, subcategory, bio, phone, listing_active, created_at, updated_at",
+      "id, display_name, primary_category_slug, subcategory, bio, phone, us_state_code, listing_active, created_at, updated_at",
     )
     .eq("id", user.id)
     .maybeSingle();
@@ -46,7 +53,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       .from("profiles")
       .insert({ id: user.id })
       .select(
-        "id, display_name, primary_category_slug, subcategory, bio, phone, listing_active, created_at, updated_at",
+        "id, display_name, primary_category_slug, subcategory, bio, phone, us_state_code, listing_active, created_at, updated_at",
       )
       .single();
 
@@ -56,6 +63,8 @@ export const load: LayoutServerLoad = async ({ locals }) => {
         session,
         categories,
         categoriesError,
+        usStates,
+        usStatesError,
         email: user.email ?? null,
         profile: null,
         profileError:
@@ -69,6 +78,8 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     session,
     categories,
     categoriesError,
+    usStates,
+    usStatesError,
     email: user.email ?? null,
     profile,
     profileError: null as string | null,

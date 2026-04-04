@@ -47,7 +47,7 @@
   <title>Account - WitnessExperts.com</title>
 </svelte:head>
 
-<div class="mx-auto w-full max-w-3xl px-4 py-8 md:px-6 md:py-10">
+<div class="mx-auto w-full max-w-6xl px-4 py-8 md:px-6 md:py-10">
   <div class="mb-8">
     <h1 class="text-2xl font-semibold tracking-tight md:text-3xl">Account</h1>
     <p class="text-muted-foreground mt-2 text-sm md:text-base">
@@ -58,8 +58,9 @@
     </p>
   </div>
 
-  <div class="flex max-w-2xl flex-col gap-8">
-    <Card.Root>
+  <div class="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:items-start lg:gap-12">
+    <div class="flex min-w-0 flex-col gap-8 lg:col-span-2">
+      <Card.Root>
       <Card.Header>
         <Card.Title>Login &amp; email</Card.Title>
         <Card.Description>
@@ -113,9 +114,9 @@
           </p>
         </div>
       </Card.Content>
-    </Card.Root>
+      </Card.Root>
 
-    <Card.Root>
+      <Card.Root>
       <Card.Header>
         <Card.Title>Expert profile</Card.Title>
         <Card.Description>
@@ -127,6 +128,34 @@
           Manage expert profile
         </Button>
       </Card.Content>
-    </Card.Root>
+      </Card.Root>
+    </div>
+
+    <aside class="space-y-6 lg:sticky lg:top-24">
+      <Card.Root>
+        <Card.Header>
+          <Card.Title class="text-lg">Account tips</Card.Title>
+          <Card.Description>
+            Keep sign-in separate from how you appear to attorneys.
+          </Card.Description>
+        </Card.Header>
+        <Card.Content class="text-muted-foreground space-y-3 text-sm">
+          <p>
+            Your <strong class="text-foreground font-medium">email</strong> is only for
+            logging in and notifications—it is not your directory display name.
+          </p>
+          <p>
+            Use <strong class="text-foreground font-medium">Forgot password</strong>
+            if you need a reset; you stay signed in until you sign out from the menu.
+          </p>
+          <p>
+            <Button href="/account/profile" variant="link" class="h-auto p-0 text-sm"
+              >Expert profile</Button
+            >
+            is where name, category, and bio appear in search.
+          </p>
+        </Card.Content>
+      </Card.Root>
+    </aside>
   </div>
 </div>

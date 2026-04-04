@@ -210,7 +210,7 @@
               id="bio"
               name="bio"
               bind:value={formData.bio}
-              rows={4}
+              rows={6}
               required
               placeholder="Brief overview of your credentials, experience, and areas of expertise..."
             />

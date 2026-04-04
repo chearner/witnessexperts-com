@@ -27,6 +27,23 @@ export type Database = {
         };
         Relationships: [];
       };
+      us_states: {
+        Row: {
+          code: string;
+          name: string;
+          sort_order: number;
+        };
+        Insert: {
+          code: string;
+          name: string;
+          sort_order: number;
+        };
+        Update: {
+          name?: string;
+          sort_order?: number;
+        };
+        Relationships: [];
+      };
       subcategories: {
         Row: {
           id: string;
@@ -63,6 +80,7 @@ export type Database = {
           subcategory: string | null;
           bio: string | null;
           phone: string | null;
+          us_state_code: string | null;
           listing_active: boolean;
           created_at: string;
           updated_at: string;
@@ -74,6 +92,7 @@ export type Database = {
           subcategory?: string | null;
           bio?: string | null;
           phone?: string | null;
+          us_state_code?: string | null;
           listing_active?: boolean;
         };
         Update: {
@@ -82,9 +101,18 @@ export type Database = {
           subcategory?: string | null;
           bio?: string | null;
           phone?: string | null;
+          us_state_code?: string | null;
           listing_active?: boolean;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "profiles_us_state_code_fkey";
+            columns: ["us_state_code"];
+            isOneToOne: false;
+            referencedRelation: "us_states";
+            referencedColumns: ["code"];
+          },
+        ];
       };
     };
     Views: Record<string, never>;
