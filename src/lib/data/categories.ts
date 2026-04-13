@@ -18,11 +18,16 @@ export function getCategoryBySlug(
 
 export function getAllSubcategories(
 	categories: Category[],
-): { category: string; subcategory: string }[] {
-	const result: { category: string; subcategory: string }[] = [];
+): { category: string; categorySlug: string; subcategory: string }[] {
+	const result: { category: string; categorySlug: string; subcategory: string }[] =
+		[];
 	for (const cat of categories) {
 		for (const sub of cat.subcategories ?? []) {
-			result.push({ category: cat.name, subcategory: sub });
+			result.push({
+				category: cat.name,
+				categorySlug: cat.slug,
+				subcategory: sub,
+			});
 		}
 	}
 	return result;

@@ -7,7 +7,6 @@ export type Database = {
           slug: string;
           name: string;
           description: string | null;
-          expert_count: number | null;
           sort_order: number;
         };
         Insert: {
@@ -15,14 +14,12 @@ export type Database = {
           slug: string;
           name: string;
           description?: string | null;
-          expert_count?: number | null;
           sort_order?: number;
         };
         Update: {
           slug?: string;
           name?: string;
           description?: string | null;
-          expert_count?: number | null;
           sort_order?: number;
         };
         Relationships: [];
@@ -116,7 +113,12 @@ export type Database = {
       };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      category_expert_counts: {
+        Args: Record<string, never>;
+        Returns: { slug: string; expert_count: number }[];
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };

@@ -18,9 +18,9 @@
 			? allSubcategories.filter(
 					({ subcategory, category }) =>
 						subcategory.toLowerCase().includes(query.toLowerCase()) ||
-						category.toLowerCase().includes(query.toLowerCase())
+						category.toLowerCase().includes(query.toLowerCase()),
 				)
-			: []
+			: [],
 	);
 
 	const filteredCategories = $derived(
@@ -73,9 +73,9 @@
 					</p>
 				</div>
 				<div class="flex flex-col gap-2">
-					{#each searchResults.slice(0, 50) as { subcategory, category }}
+					{#each searchResults.slice(0, 50) as { subcategory, category, categorySlug }}
 						<a
-							href="/categories?q={encodeURIComponent(subcategory)}"
+							href="/categories/{categorySlug}?sub={encodeURIComponent(subcategory)}"
 							class="flex items-center justify-between rounded-md border border-border bg-card px-6 py-4 transition-all hover:border-primary/40 hover:shadow-sm"
 						>
 							<span class="font-semibold text-foreground">{subcategory}</span>

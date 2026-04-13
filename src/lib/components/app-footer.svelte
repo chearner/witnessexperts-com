@@ -41,12 +41,12 @@
         </h4>
         <ul class="flex flex-col items-center gap-1 md:items-start">
           <li>
-            <Button href="/categories" variant="ghost" size="sm">
+            <Button href="/categories" variant="ghost" size="sm" class="px-0">
               <HugeiconsIcon
                 icon={LayoutGridIcon}
                 data-icon="inline-start"
                 strokeWidth={2}
-                class="text-muted-foreground size-4"
+                class="text-muted-foreground size-4 mr-1"
               />
               Search by Category
             </Button>
@@ -57,7 +57,7 @@
                 icon={Location01Icon}
                 data-icon="inline-start"
                 strokeWidth={2}
-                class="text-muted-foreground size-4"
+                class="text-muted-foreground size-4 mr-1"
               />
               Search by Location
             </Button>
@@ -68,7 +68,7 @@
                 icon={Search01Icon}
                 data-icon="inline-start"
                 strokeWidth={2}
-                class="text-muted-foreground size-4"
+                class="text-muted-foreground size-4 mr-1"
               />
               Search by Keyword
             </Button>
@@ -79,7 +79,7 @@
                 icon={MailSend01Icon}
                 data-icon="inline-start"
                 strokeWidth={2}
-                class="text-muted-foreground size-4"
+                class="text-muted-foreground size-4 mr-1"
               />
               Request an Expert
             </Button>
@@ -106,10 +106,13 @@
             </li>
           {/if}
           <li>
-            <Button href="/login" variant="ghost" size="sm">Member login</Button>
+            <Button href="/login" variant="ghost" size="sm">Member login</Button
+            >
           </li>
           <li>
-            <Button href="/register" variant="ghost" size="sm">Create account</Button>
+            <Button href="/register" variant="ghost" size="sm"
+              >Create account</Button
+            >
           </li>
           <li>
             <Button href="/fees" variant="ghost" size="sm"
