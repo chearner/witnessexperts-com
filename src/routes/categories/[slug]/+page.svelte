@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PageData } from "./$types";
   import { page } from "$app/state";
-  import { getCategoryBySlug } from "$lib/data/categories";
+  import { getCategoryBySlug, type Category } from "$lib/data/categories";
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
 
@@ -9,6 +9,23 @@
 
   const slug = $derived(page.params.slug ?? "");
   const category = $derived(getCategoryBySlug(data.categories, slug));
+
+  /** Meta description (~160 chars) for search and social previews. */
+  function categoryMetaDescription(c: Category): string {
+    const d = c.description?.trim();
+    if (d) {
+      const lead = `${c.name} expert witnesses — `;
+      const max = 160;
+      const rest = max - lead.length;
+      if (rest <= 8)
+        return `${c.name} expert witnesses for litigation.`.slice(0, max);
+      return d.length <= rest ? lead + d : lead + `${d.slice(0, rest - 1)}…`;
+    }
+    const countPart = c.expertCount
+      ? `${c.expertCount} qualified experts`
+      : "Browse our directory";
+    return `Find ${c.name} expert witnesses. ${countPart} available for consultation and testimony.`;
+  }
 
   function expertInitials(name: string | null | undefined) {
     const t = name?.trim();
@@ -31,12 +48,7 @@
     >{category ? `${category.name} - Expert Witnesses` : "Category"} - WitnessExperts.com</title
   >
   {#if category}
-    <meta
-      name="description"
-      content="Find {category.name} expert witnesses. {category.expertCount
-        ? `${category.expertCount} qualified experts`
-        : 'Browse our directory'} available for consultation and testimony."
-    />
+    <meta name="description" content={categoryMetaDescription(category)} />
   {/if}
 </svelte:head>
 
@@ -66,6 +78,13 @@
         <span class="font-medium text-primary-foreground">{category.name}</span>
       </nav>
       <h1>{category.name}</h1>
+      {#if category.description}
+        <p
+          class="max-w-3xl text-primary-foreground/90 text-[0.9375rem] leading-relaxed"
+        >
+          {category.description}
+        </p>
+      {/if}
       {#if data.subcategoryFilter}
         <p class="text-primary-foreground/90">
           Specialty: <strong class="font-semibold text-primary-foreground"
@@ -94,7 +113,10 @@
       <div class="min-w-0 space-y-12">
         <section class="space-y-6" aria-labelledby="experts-heading">
           <div class="flex flex-wrap items-baseline justify-between gap-4">
-            <h2 id="experts-heading" class="text-2xl font-semibold tracking-tight">
+            <h2
+              id="experts-heading"
+              class="text-2xl font-semibold tracking-tight"
+            >
               {data.subcategoryFilter
                 ? `Experts — ${data.subcategoryFilter}`
                 : "Experts in this category"}
@@ -110,7 +132,8 @@
           {#if data.directoryError}
             <Card.Root>
               <Card.Header>
-                <Card.Title class="text-base">Could not load experts</Card.Title>
+                <Card.Title class="text-base">Could not load experts</Card.Title
+                >
                 <Card.Description>{data.directoryError}</Card.Description>
               </Card.Header>
             </Card.Root>
@@ -154,7 +177,9 @@
                             </p>
                           {/if}
                           {#if bioPreview(p.bio)}
-                            <p class="text-muted-foreground mt-2 line-clamp-2 text-sm leading-relaxed">
+                            <p
+                              class="text-muted-foreground mt-2 line-clamp-2 text-sm leading-relaxed"
+                            >
                               {bioPreview(p.bio)}
                             </p>
                           {/if}
@@ -170,7 +195,10 @@
 
         {#if category.subcategories && category.subcategories.length > 0}
           <section class="space-y-6" aria-labelledby="subcats-heading">
-            <h2 id="subcats-heading" class="text-2xl font-semibold tracking-tight">
+            <h2
+              id="subcats-heading"
+              class="text-2xl font-semibold tracking-tight"
+            >
               Subcategories
             </h2>
             <p class="text-muted-foreground text-sm">
@@ -181,7 +209,9 @@
             >
               {#each category.subcategories as sub}
                 <a
-                  href="/categories/{category.slug}?sub={encodeURIComponent(sub)}"
+                  href="/categories/{category.slug}?sub={encodeURIComponent(
+                    sub,
+                  )}"
                 >
                   <Card.Root class="h-full transition-shadow hover:shadow-md">
                     <Card.Header>
@@ -206,8 +236,10 @@
             >Join the directory</Button
           >
         {:else}
-          <Button href="/account/profile" variant="default" class="w-full sm:w-auto"
-            >Edit your profile</Button
+          <Button
+            href="/account/profile"
+            variant="default"
+            class="w-full sm:w-auto">Edit your profile</Button
           >
         {/if}
       </aside>

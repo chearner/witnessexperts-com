@@ -22,8 +22,9 @@
   <div class="mx-auto max-w-6xl space-y-4">
     <h1>Experts by Category</h1>
     <p class="max-w-2xl text-primary-foreground/90">
-      Browse our comprehensive directory of expert witnesses. Select a category
-      to view subcategories and available experts.
+      Browse our directory by the disciplines attorneys use to locate expert
+      witnesses for discovery, reports, and trial. Each category summarizes the
+      kinds of disputes and legal questions those experts typically address.
     </p>
   </div>
 </section>
@@ -46,6 +47,11 @@
                 <Badge variant="outline">{category.expertCount} experts</Badge>
               {/if}
             </div>
+            {#if category.description}
+              <Card.Description class="pt-1 text-[0.9375rem] leading-relaxed">
+                {category.description}
+              </Card.Description>
+            {/if}
           </Card.Header>
           {#if category.subcategories && category.subcategories.length > 0}
             <Card.Content>
