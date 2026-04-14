@@ -28,7 +28,7 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-2 gap-8 sm:grid-cols-4">
+    <div class="flex flex-row justify-between gap-8">
       <nav
         class="flex flex-col items-center gap-3 md:items-start"
         aria-labelledby="footer-find-heading"
@@ -41,7 +41,7 @@
         </h4>
         <ul class="flex flex-col items-center gap-1 md:items-start">
           <li>
-            <Button href="/categories" variant="ghost" size="sm" class="px-0">
+            <Button href="/categories" variant="ghost" size="sm" class="px-0!">
               <HugeiconsIcon
                 icon={LayoutGridIcon}
                 data-icon="inline-start"
@@ -52,7 +52,12 @@
             </Button>
           </li>
           <li>
-            <Button href="/search?location=1" variant="ghost" size="sm">
+            <Button
+              href="/search?location=1"
+              variant="ghost"
+              size="sm"
+              class="px-0!"
+            >
               <HugeiconsIcon
                 icon={Location01Icon}
                 data-icon="inline-start"
@@ -63,7 +68,7 @@
             </Button>
           </li>
           <li>
-            <Button href="/search" variant="ghost" size="sm">
+            <Button href="/search" variant="ghost" size="sm" class="px-0!">
               <HugeiconsIcon
                 icon={Search01Icon}
                 data-icon="inline-start"
@@ -74,7 +79,7 @@
             </Button>
           </li>
           <li>
-            <Button href="/request" variant="ghost" size="sm">
+            <Button href="/request" variant="ghost" size="sm" class="px-0!">
               <HugeiconsIcon
                 icon={MailSend01Icon}
                 data-icon="inline-start"
@@ -100,23 +105,24 @@
         <ul class="flex flex-col items-center gap-1 md:items-start">
           {#if !page.data.session?.user}
             <li>
-              <Button href="/register" variant="ghost" size="sm"
-                >Get Listed Today</Button
+              <Button href="/register" variant="ghost" size="sm" class="px-0!">
+                Get Listed Today</Button
               >
             </li>
           {/if}
           <li>
-            <Button href="/login" variant="ghost" size="sm">Member login</Button
+            <Button href="/login" variant="ghost" size="sm" class="px-0!"
+              >Member login</Button
             >
           </li>
           <li>
-            <Button href="/register" variant="ghost" size="sm"
-              >Create account</Button
+            <Button href="/register" variant="ghost" size="sm" class="px-0!">
+              Create account</Button
             >
           </li>
           <li>
-            <Button href="/fees" variant="ghost" size="sm"
-              >Fees & Practices</Button
+            <Button href="/fees" variant="ghost" size="sm" class="px-0!">
+              Fees & Practices</Button
             >
           </li>
         </ul>
@@ -134,12 +140,14 @@
         </h4>
         <ul class="flex flex-col items-center gap-1 md:items-start">
           <li>
-            <Button href="/library" variant="ghost" size="sm"
+            <Button href="/library" variant="ghost" size="sm" class="px-0!"
               >Expert Library</Button
             >
           </li>
           <li>
-            <Button href="/blog" variant="ghost" size="sm">Blog</Button>
+            <Button href="/blog" variant="ghost" size="sm" class="px-0!"
+              >Blog</Button
+            >
           </li>
         </ul>
       </nav>
@@ -156,20 +164,23 @@
         </h4>
         <ul class="flex flex-col items-center gap-1 md:items-start">
           <li>
-            <Button href="/about" variant="ghost" size="sm">About Us</Button>
+            <Button href="/about" variant="ghost" size="sm" class="px-0!"
+              >About Us</Button
+            >
           </li>
           <li>
-            <Button href="/terms" variant="ghost" size="sm"
+            <Button href="/terms" variant="ghost" size="sm" class="px-0!"
               >Terms & Conditions</Button
             >
           </li>
           <li>
-            <Button href="/privacy" variant="ghost" size="sm"
+            <Button href="/privacy" variant="ghost" size="sm" class="px-0!"
               >Privacy Policy</Button
             >
           </li>
           <li>
-            <Button href="/contact" variant="ghost" size="sm">Contact Us</Button
+            <Button href="/contact" variant="ghost" size="sm" class="px-0!"
+              >Contact Us</Button
             >
           </li>
         </ul>

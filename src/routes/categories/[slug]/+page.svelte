@@ -115,7 +115,7 @@
               class="text-2xl font-semibold tracking-tight"
             >
               {data.subcategoryFilter
-                ? `Experts — ${data.subcategoryFilter}`
+                ? `${data.subcategoryFilter} Experts`
                 : "Experts in this category"}
             </h2>
             {#if !data.directoryError}
@@ -140,8 +140,6 @@
               {data.subcategoryFilter
                 ? "this specialty yet."
                 : "this category yet."}
-              Experts appear here when their profile is active and their primary
-              category matches.
             </p>
           {:else}
             <ul class="flex list-none flex-col gap-4 p-0">
@@ -198,9 +196,6 @@
             >
               Subcategories
             </h2>
-            <p class="text-muted-foreground text-sm">
-              Choose a specialty to see experts who listed it as their focus.
-            </p>
             <div
               class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4"
             >

@@ -38,7 +38,11 @@
         <Card.Root>
           <Card.Header>
             <div class="flex flex-wrap items-baseline justify-between gap-4">
-              <Button href="/categories/{category.slug}" variant="link">
+              <Button
+                href="/categories/{category.slug}"
+                variant="link"
+                class="px-0!"
+              >
                 <Heading level={2}>
                   {category.name}
                 </Heading>

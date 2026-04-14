@@ -35,9 +35,7 @@
 </script>
 
 <header class="sticky top-0 z-50 border-b bg-background shadow-sm">
-  <div
-    class="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 lg:gap-8 lg:px-6"
-  >
+  <div class="mx-auto flex max-w-6xl items-center gap-4 py-3 lg:gap-8 px-0">
     {#if showSidebarTrigger}
       <Sidebar.Trigger class="-ms-1 shrink-0 lg:flex" />
     {/if}
@@ -80,8 +78,35 @@
       </Button>
     </nav>
 
+    <div class="hidden items-center gap-2 lg:flex">
+      {#if session?.user && !hideMemberAuth}
+        <Button href="/account" variant="ghost" size="sm">Account</Button>
+        <span
+          class="text-muted-foreground max-w-[120px] truncate text-sm"
+          title={session.user.email ?? ""}
+        >
+          {session.user.email}
+        </span>
+        <form
+          method="POST"
+          action="/logout"
+          class="inline-flex"
+          use:enhance={submittingEnhance((v) => (signingOut = v))}
+        >
+          <Button type="submit" variant="outline" size="sm" loading={signingOut}
+            >Sign out</Button
+          >
+        </form>
+      {:else if !session?.user}
+        <Button href="/login" variant="outline" size="sm">Member Login</Button>
+      {/if}
+      {#if !session?.user}
+        <Button href="/register" size="sm">Get Listed Today</Button>
+      {/if}
+    </div>
+
     <form
-      class="hidden w-full max-w-[220px] flex items-stretch overflow-hidden rounded-lg border border-border bg-muted/40 lg:flex"
+      class="hidden w-full max-w-[300px] shrink-0 items-stretch overflow-hidden rounded-lg border border-border bg-muted/40 lg:flex"
       role="search"
       onsubmit={handleSearch}
     >
@@ -117,30 +142,6 @@
         </svg>
       </Button>
     </form>
-
-    <div class="hidden items-center gap-2 lg:flex">
-      {#if session?.user && !hideMemberAuth}
-        <Button href="/account" variant="ghost" size="sm">Account</Button>
-        <span class="text-muted-foreground max-w-[120px] truncate text-sm" title={session.user.email ?? ""}>
-          {session.user.email}
-        </span>
-        <form
-          method="POST"
-          action="/logout"
-          class="inline-flex"
-          use:enhance={submittingEnhance((v) => (signingOut = v))}
-        >
-          <Button type="submit" variant="outline" size="sm" loading={signingOut}
-            >Sign out</Button
-          >
-        </form>
-      {:else if !session?.user}
-        <Button href="/login" variant="outline" size="sm">Member Login</Button>
-      {/if}
-      {#if !session?.user}
-        <Button href="/register" size="sm">Get Listed Today</Button>
-      {/if}
-    </div>
 
     <Button
       type="button"
