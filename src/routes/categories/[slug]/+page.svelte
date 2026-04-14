@@ -2,6 +2,7 @@
   import type { PageData } from "./$types";
   import { page } from "$app/state";
   import { getCategoryBySlug, type Category } from "$lib/data/categories";
+  import FeaturedExpertsCard from "$lib/components/featured-experts-card.svelte";
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
 
@@ -53,7 +54,7 @@
 </svelte:head>
 
 {#if category}
-  <section class="bg-primary px-6 py-12 text-primary-foreground">
+  <section class="bg-primary px-0 py-12 text-primary-foreground">
     <div class="mx-auto max-w-6xl space-y-4">
       <nav
         class="flex flex-wrap items-center gap-2 text-sm"
@@ -98,15 +99,11 @@
             >Show all in category</Button
           >
         </p>
-      {:else if category.expertCount}
-        <p class="text-primary-foreground/90">
-          {category.expertCount} expert witnesses in this category
-        </p>
       {/if}
     </div>
   </section>
 
-  <div class="mx-auto max-w-6xl px-6 py-12">
+  <div class="mx-auto max-w-6xl px-0 py-12">
     <div
       class="grid gap-10 lg:grid-cols-[1fr_minmax(280px,340px)] lg:items-start lg:gap-12"
     >
@@ -155,7 +152,7 @@
                     class="block rounded-lg border border-border bg-card no-underline transition-shadow hover:shadow-md"
                   >
                     <Card.Root class="border-0 shadow-none">
-                      <Card.Content class="flex gap-4 pt-6">
+                      <Card.Content class="flex gap-4">
                         <div
                           class="bg-muted text-muted-foreground flex size-14 shrink-0 items-center justify-center rounded-full text-sm font-semibold"
                           aria-hidden="true"
@@ -226,22 +223,41 @@
       </div>
 
       <aside class="space-y-6 lg:sticky lg:top-24">
-        <h2 class="text-lg font-semibold">Get listed</h2>
-        <p class="text-muted-foreground text-sm">
-          Create a profile so attorneys can find you in this category and
-          specialties.
-        </p>
-        {#if !page.data.session?.user}
-          <Button href="/list" variant="default" class="w-full sm:w-auto"
-            >Join the directory</Button
+        <div class="space-y-3">
+          <FeaturedExpertsCard
+            experts={data.categoryFeaturedExperts}
+            error={data.categoryFeaturedError}
           >
-        {:else}
-          <Button
-            href="/account/profile"
-            variant="default"
-            class="w-full sm:w-auto">Edit your profile</Button
-          >
-        {/if}
+            {#snippet empty()}
+              <p class="text-muted-foreground text-sm">
+                No featured listings for this category yet.
+              </p>
+            {/snippet}
+          </FeaturedExpertsCard>
+        </div>
+
+        <Card.Root>
+          <Card.Header class="pb-2">
+            <Card.Title class="text-lg">Get listed</Card.Title>
+            <Card.Description>
+              Create a profile so attorneys can find you in this category and
+              specialties.
+            </Card.Description>
+          </Card.Header>
+          <Card.Content class="pt-0">
+            {#if !page.data.session?.user}
+              <Button href="/list" variant="default" class="w-full sm:w-auto"
+                >Join the directory</Button
+              >
+            {:else}
+              <Button
+                href="/account/profile"
+                variant="default"
+                class="w-full sm:w-auto">Edit your profile</Button
+              >
+            {/if}
+          </Card.Content>
+        </Card.Root>
       </aside>
     </div>
   </div>

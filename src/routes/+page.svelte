@@ -6,21 +6,13 @@
     Location01Icon,
     MailSend01Icon,
   } from "@hugeicons/core-free-icons";
+  import FeaturedExpertsCard from "$lib/components/featured-experts-card.svelte";
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
   import * as Card from "$lib/components/ui/card";
 
   let { data }: { data: PageData } = $props();
-
-  function expertInitials(name: string) {
-    return name
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase() ?? "")
-      .join("");
-  }
 </script>
 
 <svelte:head>
@@ -68,45 +60,12 @@
       </div>
     </div>
 
-    <div class="w-full min-w-0">
-      <Card.Root
-        class="border-primary-foreground/20 bg-card text-left text-card-foreground shadow-lg"
-      >
-        <Card.Header class="pb-2">
-          <Card.Title class="text-lg">Featured experts</Card.Title>
-          <Card.Description>
-            Spotlight profiles from our directory — refreshed on each visit.
-          </Card.Description>
-        </Card.Header>
-        <Card.Content class="pt-0">
-          <ul class="divide-y divide-border" role="list">
-            {#each data.featuredExperts as expert (expert.id)}
-              <li>
-                <a
-                  href={expert.href ?? "/search"}
-                  class="flex gap-3 rounded-lg py-3 transition-colors hover:bg-muted/60"
-                >
-                  <div
-                    class="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground text-xs font-semibold"
-                    aria-hidden="true"
-                  >
-                    {expertInitials(expert.name)}
-                  </div>
-                  <div class="min-w-0 flex-1">
-                    <p class="font-medium text-foreground leading-tight">
-                      {expert.name}
-                    </p>
-                    <p class="text-muted-foreground text-sm">{expert.title}</p>
-                    <p class="text-muted-foreground text-xs">
-                      {expert.location}
-                    </p>
-                  </div>
-                </a>
-              </li>
-            {/each}
-          </ul>
-        </Card.Content>
-      </Card.Root>
+    <div class="w-full min-w-0 space-y-3">
+      <FeaturedExpertsCard
+        experts={data.featuredExperts}
+        error={data.featuredExpertsError}
+        cardClass="border-primary-foreground/20 bg-card text-left text-card-foreground shadow-lg"
+      />
     </div>
   </div>
 </section>
@@ -246,7 +205,9 @@
           Create a searchable profile today.
         </p>
       </div>
-      <Button href="/register" size="lg" variant="secondary">Get Listed Today</Button>
+      <Button href="/register" size="lg" variant="secondary"
+        >Get Listed Today</Button
+      >
     </div>
   </section>
 {/if}

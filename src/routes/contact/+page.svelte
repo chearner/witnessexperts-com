@@ -12,12 +12,12 @@
   />
 </svelte:head>
 
-<section class="bg-primary px-6 py-12 text-primary-foreground">
+<section class="bg-primary px-0 py-12 text-primary-foreground">
   <div class="mx-auto max-w-6xl space-y-4">
     <h1>Contact us</h1>
     <p class="max-w-2xl text-primary-foreground/90">
-      Reach out about directory listings, technical issues, or partnerships. Full
-      contact options will be added here.
+      Reach out about directory listings, technical issues, or partnerships.
+      Full contact options will be added here.
     </p>
   </div>
 </section>
@@ -27,8 +27,8 @@
     <Card.Header>
       <Card.Title>Get in touch</Card.Title>
       <Card.Description>
-        This page is a placeholder. We will list email, phone, and business hours
-        when they are finalized.
+        This page is a placeholder. We will list email, phone, and business
+        hours when they are finalized.
       </Card.Description>
     </Card.Header>
     <Card.Content class="space-y-4 text-muted-foreground text-sm">

@@ -11,7 +11,7 @@
   />
 </svelte:head>
 
-<section class="bg-primary px-6 py-12 text-primary-foreground">
+<section class="bg-primary px-0 py-12 text-primary-foreground">
   <div class="mx-auto max-w-6xl space-y-4">
     <h1>Privacy policy</h1>
     <p class="max-w-2xl text-primary-foreground/90">
@@ -34,9 +34,9 @@
     <Card.Content class="space-y-4 text-muted-foreground text-sm">
       <p>
         WitnessExperts.com respects your privacy. When the full policy is
-        published, it will explain what we collect (for example, account and inquiry
-        information), why we collect it, and how to access or delete your data where
-        applicable.
+        published, it will explain what we collect (for example, account and
+        inquiry information), why we collect it, and how to access or delete
+        your data where applicable.
       </p>
     </Card.Content>
     <Card.Footer class="justify-center">

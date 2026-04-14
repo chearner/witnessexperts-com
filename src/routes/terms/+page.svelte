@@ -11,12 +11,12 @@
   />
 </svelte:head>
 
-<section class="bg-primary px-6 py-12 text-primary-foreground">
+<section class="bg-primary px-0 py-12 text-primary-foreground">
   <div class="mx-auto max-w-6xl space-y-4">
     <h1>Terms & conditions</h1>
     <p class="max-w-2xl text-primary-foreground/90">
-      Legal terms governing use of this website and our services. A full agreement
-      will be posted here for your review.
+      Legal terms governing use of this website and our services. A full
+      agreement will be posted here for your review.
     </p>
   </div>
 </section>
@@ -32,9 +32,9 @@
     </Card.Header>
     <Card.Content class="space-y-4 text-muted-foreground text-sm">
       <p>
-        WitnessExperts.com provides a directory and introduction service. It does
-        not provide legal advice and is not a law firm. Use of the site is at your
-        own risk until formal terms are published.
+        WitnessExperts.com provides a directory and introduction service. It
+        does not provide legal advice and is not a law firm. Use of the site is
+        at your own risk until formal terms are published.
       </p>
       <p>
         For questions about these terms, use the contact page once it includes

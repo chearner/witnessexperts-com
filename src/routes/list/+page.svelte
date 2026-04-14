@@ -43,7 +43,7 @@
   />
 </svelte:head>
 
-<section class="bg-primary px-6 py-12 text-primary-foreground">
+<section class="bg-primary px-0 py-12 text-primary-foreground">
   <div
     class="mx-auto flex max-w-6xl flex-col gap-6 sm:flex-row sm:items-center sm:gap-8"
   >
@@ -64,7 +64,7 @@
   </div>
 </section>
 
-<div class="mx-auto max-w-6xl px-6 py-12">
+<div class="mx-auto max-w-6xl px-0 py-12">
   <section class="mb-16 space-y-8">
     <h2 class="text-center">Why list with WitnessExperts?</h2>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">

@@ -18,6 +18,12 @@
   let { data, form } = $props();
 
   let submitting = $state(false);
+  let submittingFeatured = $state(false);
+
+  let featuredSelection = $state<string[]>([]);
+  $effect(() => {
+    featuredSelection = [...data.featuredPlacementPaths];
+  });
 
   let displayName = $state("");
   let phoneVal = $state("");
@@ -59,6 +65,9 @@
   }
 
   const saved = $derived(page.url.searchParams.get("saved") === "1");
+  const featuredSaved = $derived(
+    page.url.searchParams.get("featured_saved") === "1",
+  );
 
   let prevSaved = $state(false);
   $effect(() => {
@@ -68,6 +77,16 @@
       });
     }
     prevSaved = saved;
+  });
+
+  let prevFeaturedSaved = $state(false);
+  $effect(() => {
+    if (featuredSaved && !prevFeaturedSaved) {
+      toast.success("Featured placements saved", {
+        description: "We updated where your profile may appear in spotlights.",
+      });
+    }
+    prevFeaturedSaved = featuredSaved;
   });
 </script>
 
@@ -265,6 +284,57 @@
               highlight testimony experience, jurisdictions, and what makes your
               practice distinctive.
             </p>
+          </Card.Content>
+        </Card.Root>
+
+        <Card.Root>
+          <Card.Header>
+            <Card.Title class="text-lg">Featured placements</Card.Title>
+            <Card.Description>
+              Choose where your profile may appear in directory spotlights (for
+              example the home page or a category). You can select up to 12 paths.
+              Availability is subject to site policy.
+            </Card.Description>
+          </Card.Header>
+          <Card.Content class="space-y-4">
+            {#if form?.featuredMessage}
+              <Alert variant="destructive">
+                <AlertTitle>Could not save placements</AlertTitle>
+                <AlertDescription>{form.featuredMessage}</AlertDescription>
+              </Alert>
+            {/if}
+            <form
+              method="POST"
+              action="?/saveFeaturedPlacements"
+              class="space-y-4"
+              use:enhance={submittingEnhance((v) => (submittingFeatured = v))}
+            >
+              <fieldset class="space-y-3">
+                <legend class="sr-only">Site paths for featured placement</legend>
+                {#each data.advertisablePlacementOptions as opt (opt.path)}
+                  <label
+                    class="hover:bg-muted/50 flex cursor-pointer gap-3 rounded-lg border border-transparent px-1 py-2 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring"
+                  >
+                    <input
+                      type="checkbox"
+                      name="page_path"
+                      bind:group={featuredSelection}
+                      value={opt.path}
+                      class="border-input text-primary mt-0.5 size-4 shrink-0 rounded"
+                    />
+                    <span class="text-foreground text-sm leading-snug">
+                      {opt.label}
+                      <span class="text-muted-foreground block text-xs font-mono">
+                        {opt.path}
+                      </span>
+                    </span>
+                  </label>
+                {/each}
+              </fieldset>
+              <Button type="submit" loading={submittingFeatured}
+                >Save featured placements</Button
+              >
+            </form>
           </Card.Content>
         </Card.Root>
       </aside>

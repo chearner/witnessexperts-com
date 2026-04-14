@@ -1,9 +1,50 @@
+import {
+	buildAdvertisablePagePaths,
+	isAdvertisablePagePath,
+	labelForAdvertisablePath,
+} from "$lib/server/advertisable-page-paths";
 import { fail, redirect } from "@sveltejs/kit";
-import type { Actions } from "./$types";
+import type { Actions, PageServerLoad } from "./$types";
 
 const MAX_BIO = 2000;
 const MAX_PHONE = 40;
 const MAX_SUBCATEGORY = 120;
+const MAX_FEATURED_PLACEMENTS = 12;
+
+export const load: PageServerLoad = async ({ parent, locals }) => {
+	const { categories } = await parent();
+	const categoryNameBySlug = new Map(
+		categories.map((c) => [c.slug, c.name] as const),
+	);
+	const advertisablePlacementOptions = buildAdvertisablePagePaths(
+		categories.map((c) => c.slug),
+	)
+		.map((path) => ({
+			path,
+			label: labelForAdvertisablePath(path, categoryNameBySlug),
+		}))
+		.sort((a, b) => a.path.localeCompare(b.path));
+
+	const {
+		data: { user },
+	} = await locals.supabase.auth.getUser();
+	if (!user) {
+		return {
+			featuredPlacementPaths: [] as string[],
+			advertisablePlacementOptions,
+		};
+	}
+
+	const { data: rows } = await locals.supabase
+		.from("profile_featured_placements")
+		.select("page_path")
+		.eq("profile_id", user.id);
+
+	return {
+		featuredPlacementPaths: (rows ?? []).map((r) => r.page_path),
+		advertisablePlacementOptions,
+	};
+};
 
 async function validSubcategory(
 	supabase: App.Locals["supabase"],
@@ -142,5 +183,61 @@ export const actions: Actions = {
 		}
 
 		throw redirect(303, "/account/profile?saved=1");
+	},
+
+	saveFeaturedPlacements: async ({ request, locals }) => {
+		const {
+			data: { user },
+		} = await locals.supabase.auth.getUser();
+
+		if (!user) {
+			throw redirect(303, "/login");
+		}
+
+		const { data: catRows } = await locals.supabase
+			.from("categories")
+			.select("slug");
+		const categorySlugs = (catRows ?? []).map((c) => c.slug);
+
+		const formData = await request.formData();
+		const raw = formData.getAll("page_path");
+		const selected = [...new Set(raw.map((v) => String(v).trim()))].filter(
+			Boolean,
+		);
+		const allowed = selected.filter((p) =>
+			isAdvertisablePagePath(p, categorySlugs),
+		);
+
+		if (allowed.length > MAX_FEATURED_PLACEMENTS) {
+			return fail(400, {
+				featuredMessage: `Choose at most ${MAX_FEATURED_PLACEMENTS} placements.`,
+			});
+		}
+
+		const { error: delErr } = await locals.supabase
+			.from("profile_featured_placements")
+			.delete()
+			.eq("profile_id", user.id);
+
+		if (delErr) {
+			return fail(400, { featuredMessage: delErr.message });
+		}
+
+		if (allowed.length > 0) {
+			const { error: insErr } = await locals.supabase
+				.from("profile_featured_placements")
+				.insert(
+					allowed.map((page_path) => ({
+						profile_id: user.id,
+						page_path,
+					})),
+				);
+
+			if (insErr) {
+				return fail(400, { featuredMessage: insErr.message });
+			}
+		}
+
+		throw redirect(303, "/account/profile?featured_saved=1");
 	},
 };

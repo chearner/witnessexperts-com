@@ -35,7 +35,7 @@
     </Card.Root>
   </div>
 {:else if expert}
-  <section class="bg-primary px-6 py-12 text-primary-foreground">
+  <section class="bg-primary px-0 py-12 text-primary-foreground">
     <div class="mx-auto max-w-3xl space-y-4">
       <nav
         class="flex flex-wrap items-center gap-2 text-sm"
@@ -77,12 +77,12 @@
           {expert.primary_category_slug}
         {/if}
         {#if expert.subcategory?.trim()}
-          <span class="text-primary-foreground/70"> · </span
-          >{expert.subcategory.trim()}
+          <span class="text-primary-foreground/70">
+            ·
+          </span>{expert.subcategory.trim()}
         {/if}
         {#if expert.state_name}
-          <span class="text-primary-foreground/70"> · </span
-          >{expert.state_name}
+          <span class="text-primary-foreground/70"> · </span>{expert.state_name}
         {/if}
       </p>
     </div>
@@ -95,7 +95,9 @@
       </Card.Header>
       <Card.Content class="space-y-6">
         {#if expert.bio?.trim()}
-          <p class="text-muted-foreground whitespace-pre-wrap text-[0.9375rem] leading-relaxed">
+          <p
+            class="text-muted-foreground whitespace-pre-wrap text-[0.9375rem] leading-relaxed"
+          >
             {expert.bio.trim()}
           </p>
         {:else}

@@ -111,6 +111,34 @@ export type Database = {
           },
         ];
       };
+      profile_featured_placements: {
+        Row: {
+          id: string;
+          profile_id: string;
+          page_path: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          profile_id: string;
+          page_path: string;
+          created_at?: string;
+        };
+        Update: {
+          profile_id?: string;
+          page_path?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "profile_featured_placements_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {

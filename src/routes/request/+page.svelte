@@ -37,17 +37,17 @@
   />
 </svelte:head>
 
-<section class="bg-primary px-6 py-12 text-primary-foreground">
+<section class="bg-primary px-0 py-12 text-primary-foreground">
   <div class="mx-auto max-w-6xl space-y-4">
     <h1>Request an Expert</h1>
     <p class="max-w-2xl text-primary-foreground/90">
-      Can't find the right expert in our directory? Submit your request and we'll
-      help connect you with qualified expert witnesses from our network.
+      Can't find the right expert in our directory? Submit your request and
+      we'll help connect you with qualified expert witnesses from our network.
     </p>
   </div>
 </section>
 
-<div class="mx-auto max-w-6xl px-6 py-12">
+<div class="mx-auto max-w-6xl px-0 py-12">
   {#if submitted}
     <Card.Root class="mx-auto max-w-md text-center">
       <Card.Header>
@@ -141,7 +141,9 @@
               />
             </div>
 
-            <Button type="submit" class="w-full md:w-auto">Submit request</Button>
+            <Button type="submit" class="w-full md:w-auto"
+              >Submit request</Button
+            >
           </form>
         </Card.Content>
       </Card.Root>
@@ -152,7 +154,9 @@
             <Card.Title class="text-lg">What happens next?</Card.Title>
           </Card.Header>
           <Card.Content>
-            <ol class="list-decimal space-y-2 pl-5 text-muted-foreground text-sm">
+            <ol
+              class="list-decimal space-y-2 pl-5 text-muted-foreground text-sm"
+            >
               <li>We review your request within 24 hours</li>
               <li>Our team searches our network for matching experts</li>
               <li>You receive curated expert profiles via email</li>
@@ -165,12 +169,14 @@
           <Card.Header>
             <Card.Title class="text-lg">Prefer to search?</Card.Title>
             <Card.Description>
-              Browse our directory of 1,400+ expert witnesses across 15+ practice
-              areas.
+              Browse our directory of 1,400+ expert witnesses across 15+
+              practice areas.
             </Card.Description>
           </Card.Header>
           <Card.Footer>
-            <Button href="/categories" variant="outline">Browse categories</Button>
+            <Button href="/categories" variant="outline"
+              >Browse categories</Button
+            >
           </Card.Footer>
         </Card.Root>
       </aside>
