@@ -61,6 +61,10 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.148 0.004 228.8);
   --primary: oklch(0.555 0.163 48.998);
+  --primary-2: oklch(0.555 0.163 48.998);
+  --primary-3: oklch(0.666 0.179 58.318);
+  --primary-4: oklch(0.769 0.188 70.08);
+  --primary-5: oklch(0.879 0.169 91.605);
   --primary-foreground: oklch(0.987 0.022 95.277);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
@@ -88,7 +92,7 @@
 }
 
 .dark {
-  --background: oklch(0.148 0.004 228.8);
+  --background: oklch(0.218 0.008 223.9);
   --foreground: oklch(0.987 0.002 197.1);
   --card: oklch(0.218 0.008 223.9);
   --card-foreground: oklch(0.987 0.002 197.1);
@@ -313,4 +317,52 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.courtroom-image-1 {
+  background-image:
+    linear-gradient(
+      to right,
+      var(--primary) 0%,
+      color-mix(in oklch, var(--primary) 75%, transparent) 42%,
+      transparent 78%
+    ),
+    url("/court-1.png");
+  background-size: cover, cover;
+  background-position:
+    center,
+    right center;
+  background-repeat: no-repeat;
+}
+
+.courtroom-image-2 {
+  background-image:
+    linear-gradient(
+      to right,
+      var(--primary) 0%,
+      color-mix(in oklch, var(--primary) 75%, transparent) 42%,
+      transparent 78%
+    ),
+    url("/court-2.png");
+  background-size: cover, cover;
+  background-position:
+    center,
+    right center;
+  background-repeat: no-repeat;
+}
+
+.color-primary-2 {
+  color: var(--primary-2);
+}
+
+.color-primary-3 {
+  color: var(--primary-3);
+}
+
+.color-primary-4 {
+  color: var(--primary-4);
+}
+
+.color-primary-5 {
+  color: var(--primary-5);
 }

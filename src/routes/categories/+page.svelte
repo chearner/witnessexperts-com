@@ -18,7 +18,9 @@
   />
 </svelte:head>
 
-<section class="bg-primary px-0 py-12 text-primary-foreground">
+<section
+  class="bg-primary px-0 py-12 text-primary-foreground courtroom-image-1"
+>
   <div class="mx-auto max-w-6xl space-y-4">
     <h1>Experts by Category</h1>
     <p class="max-w-2xl text-primary-foreground/90">

@@ -21,8 +21,7 @@
 
   $effect(() => {
     const f = form;
-    emailVal =
-      (f?.email as string | undefined) ?? data.email ?? "";
+    emailVal = (f?.email as string | undefined) ?? data.email ?? "";
   });
 
   const saved = $derived(page.url.searchParams.get("saved") === "1");
@@ -51,83 +50,80 @@
   <div class="mb-8">
     <h1 class="text-2xl font-semibold tracking-tight md:text-3xl">Account</h1>
     <p class="text-muted-foreground mt-2 text-sm md:text-base">
-      Sign-in email and password. Your public expert listing is managed on
-      <Button href="/account/profile" variant="link" class="inline h-auto p-0 text-sm"
-        >Expert profile</Button
-      >.
+      Sign-in email and password.
     </p>
   </div>
 
   <div class="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:items-start lg:gap-12">
     <div class="flex min-w-0 flex-col gap-8 lg:col-span-2">
       <Card.Root>
-      <Card.Header>
-        <Card.Title>Login &amp; email</Card.Title>
-        <Card.Description>
-          This email is used to sign in. It is not shown on your directory
-          listing unless you add it to your profile separately.
-        </Card.Description>
-      </Card.Header>
-      <Card.Content class="space-y-6">
-        {#if form?.message}
-          <Alert variant="destructive">
-            <AlertTitle>Could not save</AlertTitle>
-            <AlertDescription>{form.message}</AlertDescription>
-          </Alert>
-        {/if}
+        <Card.Header>
+          <Card.Title>Login &amp; email</Card.Title>
+          <Card.Description>
+            This email is used to sign in. It is not shown on your directory
+            listing unless you add it to your profile separately.
+          </Card.Description>
+        </Card.Header>
+        <Card.Content class="space-y-6">
+          {#if form?.message}
+            <Alert variant="destructive">
+              <AlertTitle>Could not save</AlertTitle>
+              <AlertDescription>{form.message}</AlertDescription>
+            </Alert>
+          {/if}
 
-        <form
-          method="POST"
-          class="space-y-4"
-          use:enhance={submittingEnhance((v) => (submitting = v))}
-        >
+          <form
+            method="POST"
+            class="space-y-4"
+            use:enhance={submittingEnhance((v) => (submitting = v))}
+          >
+            <div class="space-y-2">
+              <Label for="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                name="email"
+                bind:value={emailVal}
+                required
+                autocomplete="email"
+              />
+              <p class="text-muted-foreground text-xs">
+                Changing your email may require confirming the new address
+                (Supabase will email you).
+              </p>
+            </div>
+
+            <Button type="submit" loading={submitting}>Save email</Button>
+          </form>
+
           <div class="space-y-2">
-            <Label for="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              name="email"
-              bind:value={emailVal}
-              required
-              autocomplete="email"
-            />
-            <p class="text-muted-foreground text-xs">
-              Changing your email may require confirming the new address
-              (Supabase will email you).
+            <p class="text-sm font-medium">Password</p>
+            <p class="text-muted-foreground text-sm">
+              Use
+              <Button
+                href="/forgot-password"
+                variant="link"
+                class="inline h-auto p-0 text-sm">Forgot password</Button
+              >
+              to receive a reset link. Sign out from the menu on your name in the
+              sidebar.
             </p>
           </div>
-
-          <Button type="submit" loading={submitting}>Save email</Button>
-        </form>
-
-        <div class="space-y-2">
-          <p class="text-sm font-medium">Password</p>
-          <p class="text-muted-foreground text-sm">
-            Use
-            <Button
-              href="/forgot-password"
-              variant="link"
-              class="inline h-auto p-0 text-sm">Forgot password</Button
-            >
-            to receive a reset link. Sign out from the menu on your name in the
-            sidebar.
-          </p>
-        </div>
-      </Card.Content>
+        </Card.Content>
       </Card.Root>
 
       <Card.Root>
-      <Card.Header>
-        <Card.Title>Expert profile</Card.Title>
-        <Card.Description>
-          Display name, practice areas, and bio for the witness directory.
-        </Card.Description>
-      </Card.Header>
-      <Card.Content>
-        <Button href="/account/profile" variant="secondary">
-          Manage expert profile
-        </Button>
-      </Card.Content>
+        <Card.Header>
+          <Card.Title>Expert profile</Card.Title>
+          <Card.Description>
+            Display name, practice areas, and bio for the witness directory.
+          </Card.Description>
+        </Card.Header>
+        <Card.Content>
+          <Button href="/account/profile" variant="secondary">
+            Manage expert profile
+          </Button>
+        </Card.Content>
       </Card.Root>
     </div>
 
@@ -141,16 +137,20 @@
         </Card.Header>
         <Card.Content class="text-muted-foreground space-y-3 text-sm">
           <p>
-            Your <strong class="text-foreground font-medium">email</strong> is only for
-            logging in and notifications—it is not your directory display name.
+            Your <strong class="text-foreground font-medium">email</strong> is only
+            for logging in and notifications—it is not your directory display name.
           </p>
           <p>
-            Use <strong class="text-foreground font-medium">Forgot password</strong>
+            Use <strong class="text-foreground font-medium"
+              >Forgot password</strong
+            >
             if you need a reset; you stay signed in until you sign out from the menu.
           </p>
           <p>
-            <Button href="/account/profile" variant="link" class="h-auto p-0 text-sm"
-              >Expert profile</Button
+            <Button
+              href="/account/profile"
+              variant="link"
+              class="h-auto p-0 text-sm">Expert profile</Button
             >
             is where name, category, and bio appear in search.
           </p>

@@ -39,8 +39,10 @@
     {#if showSidebarTrigger}
       <Sidebar.Trigger class="-ms-1 shrink-0 lg:flex" />
     {/if}
-    <a href="/" class="text-xl font-display shrink-0 font-semibold">
-      <span>WitnessExperts</span><span class="text-lg">.com</span>
+    <a href="/" class="text-xl shrink-0 leading-tight font-extrabold">
+      <span>Witness</span><span class="font-extrabold color-primary-4"
+        >Experts</span
+      ><span class="font-extrabold">.com</span>
     </a>
 
     <nav
