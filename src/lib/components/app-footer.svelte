@@ -11,7 +11,7 @@
   import { Separator } from "$lib/components/ui/separator";
 </script>
 
-<footer class="mt-16 bg-background">
+<footer class="mt-16 bg-muted">
   <div
     class="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 py-12 text-center md:grid-cols-[1fr_2fr] md:gap-16 md:text-left"
   >

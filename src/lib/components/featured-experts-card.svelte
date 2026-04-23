@@ -33,6 +33,12 @@
     }
     return t.slice(0, 2).toUpperCase();
   }
+
+  let headshotFailed = $state<Record<string, boolean>>({});
+
+  function markHeadshotFailed(id: string) {
+    headshotFailed = { ...headshotFailed, [id]: true };
+  }
 </script>
 
 <Card.Root class={cardClass}>
@@ -58,10 +64,21 @@
               class="flex gap-3 rounded-lg py-3 transition-colors hover:bg-muted/60"
             >
               <div
-                class="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground text-xs font-semibold"
+                class="relative flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-muted-foreground text-xs font-semibold"
                 aria-hidden="true"
               >
-                {expertInitials(expert.name)}
+                {#if expert.headshotUrl && !headshotFailed[expert.id]}
+                  <img
+                    src={expert.headshotUrl}
+                    alt=""
+                    class="size-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    onerror={() => markHeadshotFailed(expert.id)}
+                  />
+                {:else}
+                  {expertInitials(expert.name)}
+                {/if}
               </div>
               <div class="min-w-0 flex-1">
                 <p class="font-medium text-foreground leading-tight">

@@ -78,6 +78,7 @@ export type Database = {
           bio: string | null;
           phone: string | null;
           us_state_code: string | null;
+          headshot_url: string | null;
           listing_active: boolean;
           created_at: string;
           updated_at: string;
@@ -90,6 +91,7 @@ export type Database = {
           bio?: string | null;
           phone?: string | null;
           us_state_code?: string | null;
+          headshot_url?: string | null;
           listing_active?: boolean;
         };
         Update: {
@@ -99,6 +101,7 @@ export type Database = {
           bio?: string | null;
           phone?: string | null;
           us_state_code?: string | null;
+          headshot_url?: string | null;
           listing_active?: boolean;
         };
         Relationships: [

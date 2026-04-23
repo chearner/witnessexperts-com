@@ -9,6 +9,7 @@ export type DirectoryProfileListItem = {
 	subcategory: string | null;
 	us_state_code: string | null;
 	state_name: string | null;
+	headshot_url: string | null;
 };
 
 export type DirectoryProfilePublic = DirectoryProfileListItem & {
@@ -22,6 +23,7 @@ function mapListRow(row: {
 	primary_category_slug: string | null;
 	subcategory: string | null;
 	us_state_code: string | null;
+	headshot_url: string | null;
 	us_states: { name: string } | null;
 }): DirectoryProfileListItem {
 	return {
@@ -32,6 +34,7 @@ function mapListRow(row: {
 		subcategory: row.subcategory,
 		us_state_code: row.us_state_code,
 		state_name: row.us_states?.name ?? null,
+		headshot_url: row.headshot_url?.trim() || null,
 	};
 }
 
@@ -43,7 +46,7 @@ export async function fetchDirectoryProfilesForCategory(
 	let q = supabase
 		.from("profiles")
 		.select(
-			"id, display_name, bio, primary_category_slug, subcategory, us_state_code, us_states(name)",
+			"id, display_name, bio, primary_category_slug, subcategory, us_state_code, headshot_url, us_states(name)",
 		)
 		.eq("listing_active", true)
 		.eq("primary_category_slug", categorySlug)
@@ -72,7 +75,7 @@ export async function fetchPublicDirectoryProfile(
 	const { data, error } = await supabase
 		.from("profiles")
 		.select(
-			"id, display_name, bio, primary_category_slug, subcategory, phone, us_state_code, us_states(name)",
+			"id, display_name, bio, primary_category_slug, subcategory, phone, us_state_code, headshot_url, us_states(name)",
 		)
 		.eq("id", profileId)
 		.eq("listing_active", true)

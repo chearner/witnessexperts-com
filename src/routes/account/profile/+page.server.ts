@@ -3,13 +3,53 @@ import {
 	isAdvertisablePagePath,
 	labelForAdvertisablePath,
 } from "$lib/server/advertisable-page-paths";
-import { fail, redirect } from "@sveltejs/kit";
+import { fail, isRedirect, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
 const MAX_BIO = 2000;
 const MAX_PHONE = 40;
 const MAX_SUBCATEGORY = 120;
 const MAX_FEATURED_PLACEMENTS = 12;
+
+const PROFILE_HEADSHOT_BUCKET = "profile-headshots";
+const MAX_HEADSHOT_BYTES = 5 * 1024 * 1024;
+const HEADSHOT_MIME_TO_EXT: Record<string, string> = {
+	"image/jpeg": "jpg",
+	"image/png": "png",
+	"image/webp": "webp",
+};
+
+function inferImageMimeFromFilename(name: string): string | null {
+	const n = name.toLowerCase();
+	if (n.endsWith(".jpg") || n.endsWith(".jpeg")) return "image/jpeg";
+	if (n.endsWith(".png")) return "image/png";
+	if (n.endsWith(".webp")) return "image/webp";
+	return null;
+}
+
+function errMsg(e: unknown): string {
+	if (e && typeof e === "object" && "message" in e) {
+		const m = (e as { message?: unknown }).message;
+		if (typeof m === "string" && m.trim()) return m;
+	}
+	return String(e);
+}
+
+async function clearProfileHeadshotObjects(
+	supabase: App.Locals["supabase"],
+	userId: string,
+): Promise<{ error: string | null }> {
+	const { data: listed, error: listErr } = await supabase.storage
+		.from(PROFILE_HEADSHOT_BUCKET)
+		.list(userId);
+	if (listErr) return { error: listErr.message };
+	const paths = (listed ?? []).map((f) => `${userId}/${f.name}`);
+	if (paths.length === 0) return { error: null };
+	const { error: rmErr } = await supabase.storage
+		.from(PROFILE_HEADSHOT_BUCKET)
+		.remove(paths);
+	return { error: rmErr?.message ?? null };
+}
 
 export const load: PageServerLoad = async ({ parent, locals }) => {
 	const { categories } = await parent();
@@ -69,7 +109,8 @@ async function validSubcategory(
 }
 
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	/** Profile fields (cannot use `default` while other named actions exist on this page). */
+	saveProfile: async ({ request, locals }) => {
 		const {
 			data: { user },
 		} = await locals.supabase.auth.getUser();
@@ -239,5 +280,147 @@ export const actions: Actions = {
 		}
 
 		throw redirect(303, "/account/profile?featured_saved=1");
+	},
+
+	uploadHeadshot: async ({ request, locals }) => {
+		const {
+			data: { user },
+		} = await locals.supabase.auth.getUser();
+
+		if (!user) {
+			throw redirect(303, "/login");
+		}
+
+		try {
+			const formData = await request.formData();
+			const raw = formData.get("headshot");
+
+			if (!(raw instanceof Blob) || raw.size === 0) {
+				return fail(400, {
+					headshotMessage: "Choose an image file to upload.",
+				});
+			}
+
+			if (raw.size > MAX_HEADSHOT_BYTES) {
+				return fail(400, {
+					headshotMessage: "Image must be 5 MB or smaller.",
+				});
+			}
+
+			let mime = raw.type?.trim() ?? "";
+			if (!mime || !HEADSHOT_MIME_TO_EXT[mime]) {
+				const name = raw instanceof File ? raw.name : "";
+				mime = inferImageMimeFromFilename(name) ?? "";
+			}
+
+			const ext = HEADSHOT_MIME_TO_EXT[mime];
+			if (!ext) {
+				return fail(400, {
+					headshotMessage:
+						"Use a JPEG, PNG, or WebP image. If the file is correct, try renaming it to end in .jpg, .png, or .webp.",
+				});
+			}
+
+			const objectPath = `${user.id}/headshot.${ext}`;
+
+			const { error: upErr } = await locals.supabase.storage
+				.from(PROFILE_HEADSHOT_BUCKET)
+				.upload(objectPath, raw, {
+					contentType: mime,
+					upsert: true,
+				});
+
+			if (upErr) {
+				return fail(400, { headshotMessage: errMsg(upErr) });
+			}
+
+			const { data: listed, error: listErr } = await locals.supabase.storage
+				.from(PROFILE_HEADSHOT_BUCKET)
+				.list(user.id);
+
+			if (listErr) {
+				return fail(400, { headshotMessage: errMsg(listErr) });
+			}
+
+			const stalePaths = (listed ?? [])
+				.filter((f) => typeof f?.name === "string" && f.name.length > 0)
+				.map((f) => `${user.id}/${f.name}`)
+				.filter((p) => p !== objectPath);
+
+			if (stalePaths.length > 0) {
+				const { error: rmErr } = await locals.supabase.storage
+					.from(PROFILE_HEADSHOT_BUCKET)
+					.remove(stalePaths);
+				if (rmErr) {
+					return fail(400, { headshotMessage: errMsg(rmErr) });
+				}
+			}
+
+			const { data: pub } = locals.supabase.storage
+				.from(PROFILE_HEADSHOT_BUCKET)
+				.getPublicUrl(objectPath);
+
+			const publicUrl = pub?.publicUrl?.trim();
+			if (!publicUrl) {
+				return fail(400, {
+					headshotMessage:
+						"Could not build a public URL for the upload. Check that the profile-headshots bucket exists and is public.",
+				});
+			}
+
+			const { error: profileError } = await locals.supabase
+				.from("profiles")
+				.update({ headshot_url: publicUrl })
+				.eq("id", user.id);
+
+			if (profileError) {
+				return fail(400, { headshotMessage: errMsg(profileError) });
+			}
+
+			throw redirect(303, "/account/profile?headshot_saved=1");
+		} catch (e) {
+			if (isRedirect(e)) throw e;
+			console.error("[uploadHeadshot]", e);
+			return fail(400, {
+				headshotMessage: errMsg(e).slice(0, 2000) || "Upload failed.",
+			});
+		}
+	},
+
+	removeHeadshot: async ({ locals }) => {
+		const {
+			data: { user },
+		} = await locals.supabase.auth.getUser();
+
+		if (!user) {
+			throw redirect(303, "/login");
+		}
+
+		try {
+			const { error: clearErr } = await clearProfileHeadshotObjects(
+				locals.supabase,
+				user.id,
+			);
+			if (clearErr) {
+				return fail(400, { headshotMessage: clearErr });
+			}
+
+			const { error: profileError } = await locals.supabase
+				.from("profiles")
+				.update({ headshot_url: null })
+				.eq("id", user.id);
+
+			if (profileError) {
+				return fail(400, { headshotMessage: errMsg(profileError) });
+			}
+
+			throw redirect(303, "/account/profile?headshot_removed=1");
+		} catch (e) {
+			if (isRedirect(e)) throw e;
+			console.error("[removeHeadshot]", e);
+			return fail(400, {
+				headshotMessage: errMsg(e).slice(0, 2000) || "Could not remove photo.",
+			});
+		}
 	},
 };

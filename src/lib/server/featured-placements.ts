@@ -7,6 +7,7 @@ export type FeaturedExpertDisplay = {
 	title: string;
 	location: string;
 	href: string;
+	headshotUrl: string | null;
 };
 
 type ProfileJoinRow = {
@@ -15,6 +16,7 @@ type ProfileJoinRow = {
 	subcategory: string | null;
 	primary_category_slug: string | null;
 	us_state_code: string | null;
+	headshot_url: string | null;
 	listing_active: boolean;
 	us_states: { name: string } | null;
 };
@@ -66,6 +68,7 @@ export async function fetchFeaturedExpertsForPagePath(
 				subcategory,
 				primary_category_slug,
 				us_state_code,
+				headshot_url,
 				listing_active,
 				us_states ( name )
 			)
@@ -93,6 +96,7 @@ export async function fetchFeaturedExpertsForPagePath(
 				title: resolveTitle(p, categoryNameBySlug),
 				location: loc || "United States",
 				href: `/experts/${p.id}`,
+				headshotUrl: p.headshot_url?.trim() || null,
 			};
 		})
 		.filter((x): x is FeaturedExpertDisplay => x !== null);

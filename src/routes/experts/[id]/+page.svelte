@@ -6,6 +6,23 @@
   let { data }: { data: PageData } = $props();
 
   const expert = $derived(data.expert);
+
+  let heroHeadshotFailed = $state(false);
+
+  $effect(() => {
+    void expert?.headshot_url;
+    heroHeadshotFailed = false;
+  });
+
+  function expertInitials(name: string | null | undefined) {
+    const t = name?.trim() ?? "";
+    if (!t) return "?";
+    const parts = t.split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase() || "?";
+    }
+    return t.slice(0, 2).toUpperCase();
+  }
 </script>
 
 <svelte:head>
@@ -36,55 +53,76 @@
   </div>
 {:else if expert}
   <section class="bg-primary px-0 py-12 text-primary-foreground">
-    <div class="mx-auto max-w-3xl space-y-4">
-      <nav
-        class="flex flex-wrap items-center gap-2 text-sm"
-        aria-label="Breadcrumb"
-      >
-        <Button
-          href="/"
-          variant="ghost"
-          size="sm"
-          class="text-primary-foreground hover:bg-primary-foreground/10"
-          >Home</Button
+    <div class="mx-auto max-w-3xl">
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+        <div
+          class="border-primary-foreground/25 bg-primary-foreground/10 text-primary-foreground/80 relative flex size-28 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 text-lg font-semibold"
+          aria-hidden="true"
         >
-        <span class="text-primary-foreground/60" aria-hidden="true">/</span>
-        <Button
-          href="/categories"
-          variant="ghost"
-          size="sm"
-          class="text-primary-foreground hover:bg-primary-foreground/10"
-          >Categories</Button
-        >
-        {#if expert.primary_category_slug}
-          <span class="text-primary-foreground/60" aria-hidden="true">/</span>
-          <Button
-            href="/categories/{expert.primary_category_slug}"
-            variant="ghost"
-            size="sm"
-            class="text-primary-foreground hover:bg-primary-foreground/10"
-            >{data.categoryLabel ?? expert.primary_category_slug}</Button
+          {#if expert.headshot_url && !heroHeadshotFailed}
+            <img
+              src={expert.headshot_url}
+              alt=""
+              class="size-full object-cover"
+              loading="eager"
+              decoding="async"
+              onerror={() => (heroHeadshotFailed = true)}
+            />
+          {:else}
+            {expertInitials(expert.display_name)}
+          {/if}
+        </div>
+        <div class="min-w-0 flex-1 space-y-4">
+          <nav
+            class="flex flex-wrap items-center gap-2 text-sm"
+            aria-label="Breadcrumb"
           >
-        {/if}
-      </nav>
-      <h1 class="text-3xl font-semibold tracking-tight">
-        {expert.display_name?.trim() || "Expert witness"}
-      </h1>
-      <p class="text-primary-foreground/90">
-        {#if data.categoryLabel}
-          {data.categoryLabel}
-        {:else if expert.primary_category_slug}
-          {expert.primary_category_slug}
-        {/if}
-        {#if expert.subcategory?.trim()}
-          <span class="text-primary-foreground/70">
-            ·
-          </span>{expert.subcategory.trim()}
-        {/if}
-        {#if expert.state_name}
-          <span class="text-primary-foreground/70"> · </span>{expert.state_name}
-        {/if}
-      </p>
+            <Button
+              href="/"
+              variant="ghost"
+              size="sm"
+              class="text-primary-foreground hover:bg-primary-foreground/10"
+              >Home</Button
+            >
+            <span class="text-primary-foreground/60" aria-hidden="true">/</span>
+            <Button
+              href="/categories"
+              variant="ghost"
+              size="sm"
+              class="text-primary-foreground hover:bg-primary-foreground/10"
+              >Categories</Button
+            >
+            {#if expert.primary_category_slug}
+              <span class="text-primary-foreground/60" aria-hidden="true">/</span>
+              <Button
+                href="/categories/{expert.primary_category_slug}"
+                variant="ghost"
+                size="sm"
+                class="text-primary-foreground hover:bg-primary-foreground/10"
+                >{data.categoryLabel ?? expert.primary_category_slug}</Button
+              >
+            {/if}
+          </nav>
+          <h1 class="text-3xl font-semibold tracking-tight">
+            {expert.display_name?.trim() || "Expert witness"}
+          </h1>
+          <p class="text-primary-foreground/90">
+            {#if data.categoryLabel}
+              {data.categoryLabel}
+            {:else if expert.primary_category_slug}
+              {expert.primary_category_slug}
+            {/if}
+            {#if expert.subcategory?.trim()}
+              <span class="text-primary-foreground/70">
+                ·
+              </span>{expert.subcategory.trim()}
+            {/if}
+            {#if expert.state_name}
+              <span class="text-primary-foreground/70"> · </span>{expert.state_name}
+            {/if}
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 

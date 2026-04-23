@@ -19,10 +19,18 @@
 
   let submitting = $state(false);
   let submittingFeatured = $state(false);
+  let submittingHeadshot = $state(false);
+  let submittingRemoveHeadshot = $state(false);
+  let headshotPreviewFailed = $state(false);
 
   let featuredSelection = $state<string[]>([]);
   $effect(() => {
     featuredSelection = [...data.featuredPlacementPaths];
+  });
+
+  $effect(() => {
+    void data.profile?.headshot_url;
+    headshotPreviewFailed = false;
   });
 
   let displayName = $state("");
@@ -88,6 +96,44 @@
     }
     prevFeaturedSaved = featuredSaved;
   });
+
+  const headshotSaved = $derived(
+    page.url.searchParams.get("headshot_saved") === "1",
+  );
+  const headshotRemoved = $derived(
+    page.url.searchParams.get("headshot_removed") === "1",
+  );
+
+  let prevHeadshotSaved = $state(false);
+  $effect(() => {
+    if (headshotSaved && !prevHeadshotSaved) {
+      toast.success("Profile photo updated", {
+        description:
+          "Your headshot appears on your public listing and in featured spots.",
+      });
+    }
+    prevHeadshotSaved = headshotSaved;
+  });
+
+  let prevHeadshotRemoved = $state(false);
+  $effect(() => {
+    if (headshotRemoved && !prevHeadshotRemoved) {
+      toast.success("Profile photo removed", {
+        description: "Your listing now shows initials instead of a photo.",
+      });
+    }
+    prevHeadshotRemoved = headshotRemoved;
+  });
+
+  function profileInitials(name: string) {
+    const t = name?.trim();
+    if (!t) return "?";
+    const parts = t.split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase() || "?";
+    }
+    return t.slice(0, 2).toUpperCase();
+  }
 </script>
 
 <svelte:head>
@@ -130,8 +176,85 @@
                 <AlertDescription>{form.message}</AlertDescription>
               </Alert>
             {/if}
+            {#if form?.headshotMessage}
+              <Alert variant="destructive">
+                <AlertTitle>Could not update photo</AlertTitle>
+                <AlertDescription>{form.headshotMessage}</AlertDescription>
+              </Alert>
+            {/if}
+
+            <div class="border-border space-y-4 border-b pb-8">
+              <h3 class="text-xl font-medium">Profile photo</h3>
+              <p class="text-muted-foreground text-sm">
+                A professional headshot appears on your public profile, category
+                listings, and featured expert spots. JPEG, PNG, or WebP, up to 5
+                MB.
+              </p>
+              <div class="flex flex-col gap-6 sm:flex-row sm:items-start">
+                <div
+                  class="bg-muted text-muted-foreground relative flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-full text-lg font-semibold"
+                  aria-hidden="true"
+                >
+                  {#if data.profile?.headshot_url && !headshotPreviewFailed}
+                    <img
+                      src={data.profile.headshot_url}
+                      alt=""
+                      class="size-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      onerror={() => (headshotPreviewFailed = true)}
+                    />
+                  {:else}
+                    {profileInitials(displayName)}
+                  {/if}
+                </div>
+                <div class="flex min-w-0 flex-1 flex-col gap-4">
+                  <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                    action="?/uploadHeadshot"
+                    class="flex flex-col gap-3 sm:max-w-md"
+                    use:enhance={submittingEnhance((v) => (submittingHeadshot = v))}
+                  >
+                    <div class="space-y-2">
+                      <Label for="headshot">Upload headshot</Label>
+                      <Input
+                        id="headshot"
+                        type="file"
+                        name="headshot"
+                        accept="image/jpeg,image/png,image/webp"
+                        class="cursor-pointer"
+                      />
+                    </div>
+                    <Button type="submit" loading={submittingHeadshot}
+                      >Upload photo</Button
+                    >
+                  </form>
+                  {#if data.profile?.headshot_url}
+                    <form
+                      method="POST"
+                      action="?/removeHeadshot"
+                      class="sm:max-w-md"
+                      use:enhance={submittingEnhance((v) =>
+                        (submittingRemoveHeadshot = v),
+                      )}
+                    >
+                      <Button
+                        type="submit"
+                        variant="outline"
+                        loading={submittingRemoveHeadshot}
+                        class="text-destructive hover:text-destructive"
+                        >Remove photo</Button
+                      >
+                    </form>
+                  {/if}
+                </div>
+              </div>
+            </div>
+
             <form
               method="POST"
+              action="?/saveProfile"
               class="space-y-8"
               use:enhance={submittingEnhance((v) => (submitting = v))}
             >

@@ -4,6 +4,7 @@
   import { getCategoryBySlug, type Category } from "$lib/data/categories";
   import FeaturedExpertsCard from "$lib/components/featured-experts-card.svelte";
   import { Button } from "$lib/components/ui/button";
+  import * as Breadcrumb from "$lib/components/ui/breadcrumb";
   import * as Card from "$lib/components/ui/card";
 
   let { data }: { data: PageData } = $props();
@@ -26,6 +27,12 @@
       ? `${c.expertCount} qualified experts`
       : "Browse our directory";
     return `Find ${c.name} expert witnesses. ${countPart} available for consultation and testimony.`;
+  }
+
+  let directoryHeadshotFailed = $state<Record<string, boolean>>({});
+
+  function markDirectoryHeadshotFailed(id: string) {
+    directoryHeadshotFailed = { ...directoryHeadshotFailed, [id]: true };
   }
 
   function expertInitials(name: string | null | undefined) {
@@ -56,28 +63,25 @@
 {#if category}
   <section class="bg-primary px-0 py-12 text-primary-foreground">
     <div class="mx-auto max-w-6xl space-y-4">
-      <nav
-        class="flex flex-wrap items-center gap-2 text-sm"
-        aria-label="Breadcrumb"
-      >
-        <Button
-          href="/"
-          variant="ghost"
-          size="sm"
-          class="text-primary-foreground hover:bg-primary-foreground/10"
-          >Home</Button
+      <Breadcrumb.Root class="text-primary-foreground">
+        <Breadcrumb.List
+          class="text-primary-foreground/90 sm:gap-2 [&_a]:text-primary-foreground/90 [&_a]:hover:text-primary-foreground [&_svg]:text-primary-foreground/55"
         >
-        <span class="text-primary-foreground/60" aria-hidden="true">/</span>
-        <Button
-          href="/categories"
-          variant="ghost"
-          size="sm"
-          class="text-primary-foreground hover:bg-primary-foreground/10"
-          >Categories</Button
-        >
-        <span class="text-primary-foreground/60" aria-hidden="true">/</span>
-        <span class="font-medium text-primary-foreground">{category.name}</span>
-      </nav>
+          <Breadcrumb.Item>
+            <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Separator class="text-primary-foreground/50" />
+          <Breadcrumb.Item>
+            <Breadcrumb.Link href="/categories">Categories</Breadcrumb.Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Separator class="text-primary-foreground/50" />
+          <Breadcrumb.Item>
+            <Breadcrumb.Page class="font-medium text-primary-foreground"
+              >{category.name}</Breadcrumb.Page
+            >
+          </Breadcrumb.Item>
+        </Breadcrumb.List>
+      </Breadcrumb.Root>
       <h1>{category.name}</h1>
       {#if category.description}
         <p
@@ -152,10 +156,21 @@
                     <Card.Root class="border-0 shadow-none">
                       <Card.Content class="flex gap-4">
                         <div
-                          class="bg-muted text-muted-foreground flex size-14 shrink-0 items-center justify-center rounded-full text-sm font-semibold"
+                          class="bg-muted text-muted-foreground relative flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-full text-sm font-semibold"
                           aria-hidden="true"
                         >
-                          {expertInitials(p.display_name)}
+                          {#if p.headshot_url && !directoryHeadshotFailed[p.id]}
+                            <img
+                              src={p.headshot_url}
+                              alt=""
+                              class="size-full object-cover"
+                              loading="lazy"
+                              decoding="async"
+                              onerror={() => markDirectoryHeadshotFailed(p.id)}
+                            />
+                          {:else}
+                            {expertInitials(p.display_name)}
+                          {/if}
                         </div>
                         <div class="min-w-0 flex-1 space-y-1">
                           <p class="text-foreground font-semibold">

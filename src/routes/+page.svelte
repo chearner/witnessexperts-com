@@ -20,7 +20,7 @@
 </svelte:head>
 
 <section
-  class="bg-primary px-6 py-16 text-primary-foreground md:py-24 courtroom-image-2"
+  class="bg-primary px-6 py-16 text-primary-foreground md:py-24 courtroom-image-1"
 >
   <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:gap-12">
     <div class="flex flex-col gap-8 text-center lg:text-left">

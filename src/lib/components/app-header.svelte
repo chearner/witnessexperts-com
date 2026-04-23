@@ -34,13 +34,13 @@
   }
 </script>
 
-<header class="sticky top-0 z-50 border-b bg-background shadow-sm">
+<header class="sticky top-0 z-50 border-b bg-muted shadow-sm">
   <div class="mx-auto flex max-w-6xl items-center gap-4 py-3 lg:gap-8 px-0">
     {#if showSidebarTrigger}
       <Sidebar.Trigger class="-ms-1 shrink-0 lg:flex" />
     {/if}
     <a href="/" class="text-xl shrink-0 leading-tight font-extrabold">
-      <span>Witness</span><span class="font-extrabold color-primary-4"
+      <span>Witness</span><span class="font-extrabold color-primary-2"
         >Experts</span
       ><span class="font-extrabold">.com</span>
     </a>
@@ -50,15 +50,6 @@
       aria-label="Main navigation"
     >
       <Button
-        href="/"
-        variant="ghost"
-        size="sm"
-        aria-current={page.url.pathname === "/" ? "page" : undefined}
-        class={cn(page.url.pathname === "/" && "bg-accent")}
-      >
-        Home
-      </Button>
-      <Button
         href="/categories"
         variant="ghost"
         size="sm"
@@ -67,7 +58,7 @@
           : undefined}
         class={cn(page.url.pathname.startsWith("/categories") && "bg-accent")}
       >
-        Find an Expert
+        Categories
       </Button>
       <Button
         href="/request"
@@ -76,7 +67,7 @@
         aria-current={page.url.pathname === "/request" ? "page" : undefined}
         class={cn(page.url.pathname === "/request" && "bg-accent")}
       >
-        Request an Expert
+        Request
       </Button>
     </nav>
 

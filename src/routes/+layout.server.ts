@@ -32,6 +32,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
         bio: string | null;
         phone: string | null;
         us_state_code: string | null;
+        headshot_url: string | null;
         listing_active: boolean;
         created_at: string;
         updated_at: string;
@@ -43,7 +44,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
   let { data: profile } = await locals.supabase
     .from("profiles")
     .select(
-      "id, display_name, primary_category_slug, subcategory, bio, phone, us_state_code, listing_active, created_at, updated_at",
+      "id, display_name, primary_category_slug, subcategory, bio, phone, us_state_code, headshot_url, listing_active, created_at, updated_at",
     )
     .eq("id", user.id)
     .maybeSingle();
@@ -53,7 +54,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
       .from("profiles")
       .insert({ id: user.id })
       .select(
-        "id, display_name, primary_category_slug, subcategory, bio, phone, us_state_code, listing_active, created_at, updated_at",
+        "id, display_name, primary_category_slug, subcategory, bio, phone, us_state_code, headshot_url, listing_active, created_at, updated_at",
       )
       .single();
 
