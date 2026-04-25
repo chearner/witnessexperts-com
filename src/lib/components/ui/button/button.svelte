@@ -4,7 +4,7 @@
 	import { type VariantProps, tv } from "tailwind-variants";
 
 	export const buttonVariants = tv({
-		base: "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-4xl border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-[3px] active:translate-y-px aria-invalid:ring-[3px] [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+		base: "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-4xl border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-[3px] active:not-aria-[haspopup]:translate-y-px aria-invalid:ring-[3px] [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
 		variants: {
 			variant: {
 				default: "bg-primary text-primary-foreground hover:bg-primary/80",
@@ -38,8 +38,6 @@
 		WithElementRef<HTMLAnchorAttributes> & {
 			variant?: ButtonVariant;
 			size?: ButtonSize;
-			/** Shows spinner, disables control, sets aria-busy (buttons only). */
-			loading?: boolean;
 		};
 </script>
 
@@ -52,52 +50,33 @@
 		href = undefined,
 		type = "button",
 		disabled,
-		loading = false,
 		children,
 		...restProps
 	}: ButtonProps = $props();
-
-	const isDisabled = $derived(!!(disabled || (!href && loading)));
 </script>
 
 {#if href}
 	<a
 		bind:this={ref}
 		data-slot="button"
-		data-loading={loading || undefined}
-		class={cn(buttonVariants({ variant, size }), loading && "pointer-events-none opacity-70", className)}
-		href={disabled || loading ? undefined : href}
-		aria-disabled={disabled || loading}
-		aria-busy={loading || undefined}
-		role={disabled || loading ? "link" : undefined}
-		tabindex={disabled || loading ? -1 : undefined}
+		class={cn(buttonVariants({ variant, size }), className)}
+		href={disabled ? undefined : href}
+		aria-disabled={disabled}
+		role={disabled ? "link" : undefined}
+		tabindex={disabled ? -1 : undefined}
 		{...restProps}
 	>
-		{#if loading}
-			<span
-				class="inline-block size-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent opacity-90"
-				aria-hidden="true"
-			></span>
-		{/if}
 		{@render children?.()}
 	</a>
 {:else}
 	<button
 		bind:this={ref}
 		data-slot="button"
-		data-loading={loading || undefined}
 		class={cn(buttonVariants({ variant, size }), className)}
 		{type}
-		disabled={isDisabled}
-		aria-busy={loading || undefined}
+		{disabled}
 		{...restProps}
 	>
-		{#if loading}
-			<span
-				class="inline-block size-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent opacity-90"
-				aria-hidden="true"
-			></span>
-		{/if}
 		{@render children?.()}
 	</button>
 {/if}

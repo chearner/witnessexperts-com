@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { browser } from "$app/environment";
 	import { Toaster as Sonner, type ToasterProps as SonnerProps } from "svelte-sonner";
+	import { mode } from "mode-watcher";
 	import { HugeiconsIcon } from "@hugeicons/svelte"
 	import { Loading03Icon } from '@hugeicons/core-free-icons';
 	import { CheckmarkCircle02Icon } from '@hugeicons/core-free-icons';
@@ -9,23 +9,10 @@
 	import { Alert02Icon } from '@hugeicons/core-free-icons';
 
 	let { ...restProps }: SonnerProps = $props();
-
-	/** Match app theme (`witnessexperts-theme` on `<html>`, not mode-watcher). */
-	let theme = $state<"light" | "dark">("light");
-	$effect(() => {
-		if (!browser) return;
-		const sync = () => {
-			theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
-		};
-		sync();
-		const mo = new MutationObserver(sync);
-		mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-		return () => mo.disconnect();
-	});
 </script>
 
 <Sonner
-	{theme}
+	theme={mode.current}
 	class="toaster group"
 	style="--normal-bg: var(--color-popover); --normal-text: var(--color-popover-foreground); --normal-border: var(--color-border);"
 	{...restProps}

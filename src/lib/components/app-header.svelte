@@ -34,15 +34,15 @@
   }
 </script>
 
-<header class="sticky top-0 z-50 border-b bg-muted shadow-sm">
+<header class="sticky top-0 z-50 border-b bg-muted/75 shadow-sm">
   <div class="mx-auto flex max-w-6xl items-center gap-4 py-3 lg:gap-8 px-0">
     {#if showSidebarTrigger}
       <Sidebar.Trigger class="-ms-1 shrink-0 lg:flex" />
     {/if}
-    <a href="/" class="text-xl shrink-0 leading-tight font-extrabold">
-      <span>Witness</span><span class="font-extrabold color-primary-2"
-        >Experts</span
-      ><span class="font-extrabold">.com</span>
+    <a href="/" class="text-xl shrink-0 leading-tight">
+      <span>Witness</span><span class="font-extrabold">Experts</span><span
+        class="text-sm">.com</span
+      >
     </a>
 
     <nav
@@ -56,7 +56,10 @@
         aria-current={page.url.pathname.startsWith("/categories")
           ? "page"
           : undefined}
-        class={cn(page.url.pathname.startsWith("/categories") && "bg-accent")}
+        class={cn(
+          page.url.pathname.startsWith("/categories") &&
+            "bg-accent text-primary-foreground",
+        )}
       >
         Categories
       </Button>
@@ -65,7 +68,10 @@
         variant="ghost"
         size="sm"
         aria-current={page.url.pathname === "/request" ? "page" : undefined}
-        class={cn(page.url.pathname === "/request" && "bg-accent")}
+        class={cn(
+          page.url.pathname === "/request" &&
+            "bg-accent text-primary-foreground",
+        )}
       >
         Request
       </Button>

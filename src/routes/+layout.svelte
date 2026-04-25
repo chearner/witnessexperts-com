@@ -28,7 +28,7 @@
     <Sidebar.Inset>
       <div class="bg-background flex min-h-svh flex-col">
         <AppHeader session={data.session} hideMemberAuth showSidebarTrigger />
-        <main class="bg-background min-h-[calc(100vh-4rem-200px)] flex-1">
+        <main class="bg-muted min-h-[calc(100vh-4rem-200px)] flex-1">
           {@render children()}
         </main>
         <AppFooter />
@@ -37,7 +37,7 @@
   </Sidebar.Provider>
 {:else}
   <AppHeader session={data.session} />
-  <main class="bg-background min-h-[calc(100vh-4rem-200px)] flex-1">
+  <main class="bg-muted min-h-[calc(100vh-4rem-200px)] flex-1">
     {@render children()}
   </main>
   <AppFooter />

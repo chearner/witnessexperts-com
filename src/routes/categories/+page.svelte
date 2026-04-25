@@ -18,15 +18,14 @@
   />
 </svelte:head>
 
-<section
-  class="bg-primary px-0 py-12 text-primary-foreground courtroom-image-1"
->
+<section class="bg-muted px-0 py-12 text-primary-foreground courtroom-image-1">
   <div class="mx-auto max-w-6xl space-y-4">
     <h1>Experts by Category</h1>
-    <p class="max-w-2xl text-primary-foreground/90">
-      Browse our directory by the disciplines attorneys use to locate expert
-      witnesses for discovery, reports, and trial. Each category summarizes the
-      kinds of disputes and legal questions those experts typically address.
+    <p class="max-w-2xl">
+      Whether you are counsel building a case or a party hiring an expert
+      witness, explore specialists by field—the same disciplines lawyers rely on
+      for opinions, discovery, and trial. Each category describes the disputes
+      and issues those experts are commonly retained to address.
     </p>
   </div>
 </section>
