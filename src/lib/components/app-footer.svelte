@@ -93,48 +93,6 @@
 
       <nav
         class="flex flex-col items-center gap-3 md:items-start"
-        aria-labelledby="footer-experts-heading"
-      >
-        <h4
-          id="footer-experts-heading"
-          class="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
-        >
-          Experts
-        </h4>
-        <ul class="flex flex-col items-center gap-1 md:items-start">
-          {#if page.data.session?.user}
-            <li>
-              <Button href="/account" variant="ghost" size="sm" class="px-0!">
-                Account</Button
-              >
-            </li>
-          {:else}
-            <li>
-              <Button href="/register" variant="ghost" size="sm" class="px-0!">
-                Get Listed Today</Button
-              >
-            </li>
-            <li>
-              <Button href="/login" variant="ghost" size="sm" class="px-0!"
-                >Member login</Button
-              >
-            </li>
-            <li>
-              <Button href="/register" variant="ghost" size="sm" class="px-0!">
-                Create account</Button
-              >
-            </li>
-          {/if}
-          <li>
-            <Button href="/fees" variant="ghost" size="sm" class="px-0!">
-              Fees & Practices</Button
-            >
-          </li>
-        </ul>
-      </nav>
-
-      <nav
-        class="flex flex-col items-center gap-3 md:items-start"
         aria-labelledby="footer-resources-heading"
       >
         <h4
