@@ -4,6 +4,7 @@
   import AppSidebar from "$lib/components/app-sidebar.svelte";
   import AppHeader from "$lib/components/app-header.svelte";
   import AppFooter from "$lib/components/app-footer.svelte";
+  import NavigationLoadingOverlay from "$lib/components/navigation-loading-overlay.svelte";
   import * as Sidebar from "$lib/components/ui/sidebar/index.js";
   import { Toaster } from "$lib/components/ui/sonner/index.js";
 
@@ -17,6 +18,7 @@
 </svelte:head>
 
 <Toaster richColors position="bottom-right" />
+<NavigationLoadingOverlay />
 
 {#if loggedIn}
   <Sidebar.Provider>

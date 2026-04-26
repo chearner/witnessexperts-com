@@ -21,7 +21,7 @@
           class="text-sm">.com</span
         >
       </a>
-      <p class="text-sm text-muted-foreground">
+      <p class="text-sm text-muted-foreground mt-2">
         America's trusted directory for connecting attorneys with qualified
         expert witnesses.
       </p>
