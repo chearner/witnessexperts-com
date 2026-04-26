@@ -16,11 +16,10 @@
     class="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 py-12 text-center md:grid-cols-[1fr_2fr] md:gap-16 md:text-left"
   >
     <div class="mx-auto max-w-sm space-y-4 md:mx-0">
-      <a
-        href="/"
-        class="font-display text-2xl font-bold leading-tight text-foreground md:text-3xl"
-      >
-        WitnessExperts.com
+      <a href="/" class="text-xl shrink-0 leading-tight">
+        <span>Witness</span><span class="font-extrabold">Experts</span><span
+          class="text-sm">.com</span
+        >
       </a>
       <p class="text-sm text-muted-foreground">
         America's trusted directory for connecting attorneys with qualified
@@ -103,23 +102,29 @@
           Experts
         </h4>
         <ul class="flex flex-col items-center gap-1 md:items-start">
-          {#if !page.data.session?.user}
+          {#if page.data.session?.user}
+            <li>
+              <Button href="/account" variant="ghost" size="sm" class="px-0!">
+                Account</Button
+              >
+            </li>
+          {:else}
             <li>
               <Button href="/register" variant="ghost" size="sm" class="px-0!">
                 Get Listed Today</Button
               >
             </li>
+            <li>
+              <Button href="/login" variant="ghost" size="sm" class="px-0!"
+                >Member login</Button
+              >
+            </li>
+            <li>
+              <Button href="/register" variant="ghost" size="sm" class="px-0!">
+                Create account</Button
+              >
+            </li>
           {/if}
-          <li>
-            <Button href="/login" variant="ghost" size="sm" class="px-0!"
-              >Member login</Button
-            >
-          </li>
-          <li>
-            <Button href="/register" variant="ghost" size="sm" class="px-0!">
-              Create account</Button
-            >
-          </li>
           <li>
             <Button href="/fees" variant="ghost" size="sm" class="px-0!">
               Fees & Practices</Button

@@ -97,7 +97,7 @@
           >
         </form>
       {:else if !session?.user}
-        <Button href="/login" variant="outline" size="sm">Member Login</Button>
+        <Button href="/login" variant="outline" size="sm">Login</Button>
       {/if}
       {#if !session?.user}
         <Button href="/register" size="sm">Get Listed Today</Button>
